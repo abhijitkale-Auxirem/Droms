@@ -4,12 +4,30 @@ import { getProgressColor, getStatusColor, cn } from "@/lib/utils";
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { Sparkles, Target, CheckSquare, TrendingUp, Award, ArrowUpRight, Brain, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import type { Dream, Goal, Habit } from "@/types";
 
 export default function DashboardPage() {
   const { user } = useAuthStore();
-  const activeGoals = mockGoals.filter(g => g.status !== "completed");
-  const onTrackGoals = mockGoals.filter(g => g.status === "on-track").length;
-  const todayHabits = mockHabits.filter(h => h.status === "active");
+
+  const [dreams] = useState<Dream[]>(() => {
+    const cached = localStorage.getItem("droms_dreams_data");
+    return cached ? JSON.parse(cached) : mockDreams;
+  });
+
+  const [goals] = useState<Goal[]>(() => {
+    const cached = localStorage.getItem("droms_goals_data");
+    return cached ? JSON.parse(cached) : mockGoals;
+  });
+
+  const [habits] = useState<Habit[]>(() => {
+    const cached = localStorage.getItem("droms_habits_data");
+    return cached ? JSON.parse(cached) : mockHabits;
+  });
+
+  const activeGoals = goals.filter(g => g.status !== "completed");
+  const onTrackGoals = goals.filter(g => g.status === "on-track").length;
+  const todayHabits = habits.filter(h => h.status === "active");
   const completedHabits = todayHabits.filter(h => h.completionRate > 80).length;
 
   return (
@@ -18,7 +36,7 @@ export default function DashboardPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold font-display text-slate-900">
-            Good morning, {user?.name?.split(" ")[0]} 👋
+            Good morning, {user?.name?.split(" ")[0]} 
           </h1>
           <p className="text-slate-500 mt-0.5">You're {user?.streakDays}-day streak strong. Keep it going!</p>
         </div>
@@ -33,8 +51,8 @@ export default function DashboardPage() {
       {/* KPI Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: "Active Dreams", value: mockDreams.filter(d => d.status === "active").length, sub: "2 need attention", icon: Sparkles, color: "bg-purple-100 text-purple-600", change: "+1 this week" },
-          { label: "Goals On Track", value: `${onTrackGoals}/${mockGoals.length}`, sub: "3 at risk", icon: Target, color: "bg-blue-100 text-blue-600", change: "+2 this month" },
+          { label: "Active Dreams", value: dreams.filter(d => d.status === "active").length, sub: "2 need attention", icon: Sparkles, color: "bg-purple-100 text-purple-600", change: "+1 this week" },
+          { label: "Goals On Track", value: `${onTrackGoals}/${goals.length}`, sub: "3 at risk", icon: Target, color: "bg-blue-100 text-blue-600", change: "+2 this month" },
           { label: "Habit Streak", value: `${user?.streakDays}d`, sub: "Personal best!", icon: CheckSquare, color: "bg-green-100 text-green-600", change: "↑ 42 days" },
           { label: "Today's Habits", value: `${completedHabits}/${todayHabits.length}`, sub: `${todayHabits.length - completedHabits} remaining`, icon: Award, color: "bg-amber-100 text-amber-600", change: "84% rate" },
         ].map((kpi) => {
@@ -171,7 +189,7 @@ export default function DashboardPage() {
             </Link>
           </div>
           <div className="divide-y divide-slate-100">
-            {mockDreams.slice(0, 5).map(dream => (
+            {dreams.slice(0, 5).map(dream => (
               <div key={dream.id} className="flex items-center gap-4 px-6 py-3 hover:bg-slate-50 transition-colors">
                 <div>
                   <p className="text-sm font-medium text-slate-800">{dream.title}</p>
@@ -199,7 +217,7 @@ export default function DashboardPage() {
             </Link>
           </div>
           <div className="divide-y divide-slate-100">
-            {mockHabits.slice(0, 5).map(habit => (
+            {habits.slice(0, 5).map(habit => (
               <div key={habit.id} className="flex items-center gap-4 px-6 py-3 hover:bg-slate-50 transition-colors">
                 <span className="text-xl">{habit.icon}</span>
                 <div className="flex-1">

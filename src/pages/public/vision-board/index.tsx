@@ -40,9 +40,7 @@ export default function VisionBoardPublicPage() {
               <Link to="/register" className="inline-flex items-center justify-center gap-2 btn-primary text-lg px-8 py-4">
                 Build Your Board <ArrowRight className="w-5 h-5" />
               </Link>
-              <Link to="/register" className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold text-lg px-8 py-4 rounded-xl transition-colors">
-                View Templates
-              </Link>
+             
             </div>
           </div>
           <div>

@@ -1,12 +1,29 @@
-import { useState } from "react";
-import { communityGroups, challenges } from "@/data/mockData";
+import { useState, useEffect } from "react";
+import { communityGroups, challenges as mockChallenges } from "@/data/mockData";
 import { Users, Trophy, MessageSquare, UserPlus, UserCheck } from "lucide-react";
 import { cn, getProgressColor } from "@/lib/utils";
 import { toast } from "sonner";
 
 export default function CommunityPage() {
-  const [groups, setGroups] = useState(communityGroups);
+  const [groups, setGroups] = useState(() => {
+    const cached = localStorage.getItem("droms_community_groups");
+    return cached ? JSON.parse(cached) : communityGroups;
+  });
+
+  const [challengesList, setChallengesList] = useState(() => {
+    const cached = localStorage.getItem("droms_challenges_data");
+    return cached ? JSON.parse(cached) : mockChallenges;
+  });
+
   const [activeTab, setActiveTab] = useState<"groups" | "challenges">("groups");
+
+  useEffect(() => {
+    localStorage.setItem("droms_community_groups", JSON.stringify(groups));
+  }, [groups]);
+
+  useEffect(() => {
+    localStorage.setItem("droms_challenges_data", JSON.stringify(challengesList));
+  }, [challengesList]);
 
   const toggleJoin = (id: string) => {
     setGroups(prev => prev.map(g => {
@@ -15,6 +32,21 @@ export default function CommunityPage() {
         return { ...g, joined: !g.joined, members: g.joined ? g.members - 1 : g.members + 1 };
       }
       return g;
+    }));
+  };
+
+  const toggleJoinChallenge = (id: string) => {
+    setChallengesList(prev => prev.map(ch => {
+      if (ch.id === id) {
+        const nextJoined = !ch.joined;
+        toast.success(nextJoined ? `Joined challenge: ${ch.title}! 🏆` : `Left challenge: ${ch.title}`);
+        return { 
+          ...ch, 
+          joined: nextJoined, 
+          participants: nextJoined ? ch.participants + 1 : Math.max(0, ch.participants - 1) 
+        };
+      }
+      return ch;
     }));
   };
 
@@ -102,7 +134,7 @@ export default function CommunityPage() {
                 </tr>
               </thead>
               <tbody>
-                {challenges.map(ch => (
+                {challengesList.map(ch => (
                   <tr key={ch.id}>
                     <td className="font-medium text-slate-800">{ch.title}</td>
                     <td><span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">{ch.category}</span></td>
@@ -116,7 +148,7 @@ export default function CommunityPage() {
                     </td>
                     <td className="text-xs text-amber-600 font-medium">{ch.prize}</td>
                     <td>
-                      <button onClick={() => toast.success(ch.joined ? "Left challenge" : "Joined challenge! 🏆")}
+                      <button onClick={() => toggleJoinChallenge(ch.id)}
                         className={cn("text-xs px-3 py-1.5 rounded-lg font-medium transition-colors",
                           ch.joined ? "bg-red-50 text-red-600 hover:bg-red-100" : "bg-primary-50 text-primary-600 hover:bg-primary-100"
                         )}>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { mockHabits } from "@/data/mockData";
 import { getStatusColor, getProgressColor, cn } from "@/lib/utils";
 import { Plus, Search, CheckSquare, X, Flame, TrendingUp } from "lucide-react";
@@ -9,10 +9,17 @@ const habitCategories = ["Wellness", "Learning", "Fitness", "Personal", "Product
 const habitIcons = ["🧘", "📚", "🏃", "✍️", "🚿", "📵", "🎯", "💧", "🙏", "🤝", "💪", "🌅", "⚡", "🔥"];
 
 export default function HabitsPage() {
-  const [habits, setHabits] = useState<Habit[]>(mockHabits);
+  const [habits, setHabits] = useState<Habit[]>(() => {
+    const cached = localStorage.getItem("droms_habits_data");
+    return cached ? JSON.parse(cached) : mockHabits;
+  });
   const [search, setSearch] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({ title: "", frequency: "daily" as Habit["frequency"], category: habitCategories[0], icon: "🎯" });
+
+  useEffect(() => {
+    localStorage.setItem("droms_habits_data", JSON.stringify(habits));
+  }, [habits]);
 
   const filtered = habits.filter(h => h.title.toLowerCase().includes(search.toLowerCase()) || h.category.toLowerCase().includes(search.toLowerCase()));
 
@@ -28,6 +35,24 @@ export default function HabitsPage() {
   const toggleStatus = (id: string) => {
     setHabits(prev => prev.map(h => h.id === id ? { ...h, status: h.status === "active" ? "paused" : "active" } : h));
     toast.success("Habit status updated");
+  };
+
+  const handleLogCompletion = (id: string) => {
+    setHabits(prev => prev.map(h => {
+      if (h.id === id) {
+        const newStreak = h.streak + 1;
+        const newRate = Math.min(100, h.completionRate + 5);
+        toast.success(`Streak updated to ${newStreak} days for ${h.title}! 🔥`);
+        return { ...h, streak: newStreak, completionRate: newRate };
+      }
+      return h;
+    }));
+  };
+
+  const handleDelete = (id: string) => {
+    const item = habits.find(h => h.id === id);
+    setHabits(prev => prev.filter(h => h.id !== id));
+    toast.success(`Deleted habit: ${item?.title}`);
   };
 
   const totalStreak = habits.reduce((a, h) => a + h.streak, 0);
@@ -111,12 +136,24 @@ export default function HabitsPage() {
                   </td>
                   <td><span className={`status-badge ${getStatusColor(habit.status)}`}>{habit.status}</span></td>
                   <td>
-                    <button onClick={() => toggleStatus(habit.id)}
-                      className={cn("text-xs px-3 py-1 rounded-full font-medium transition-colors",
-                        habit.status === "active" ? "bg-yellow-100 text-yellow-700 hover:bg-yellow-200" : "bg-green-100 text-green-700 hover:bg-green-200"
-                      )}>
-                      {habit.status === "active" ? "Pause" : "Resume"}
-                    </button>
+                    <div className="flex items-center gap-2">
+                      {habit.status === "active" && (
+                        <button onClick={() => handleLogCompletion(habit.id)}
+                          className="text-xs px-3 py-1.5 rounded-xl font-bold bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors">
+                          Complete Today
+                        </button>
+                      )}
+                      <button onClick={() => toggleStatus(habit.id)}
+                        className={cn("text-xs px-3 py-1.5 rounded-xl font-medium transition-colors",
+                          habit.status === "active" ? "bg-amber-50 text-amber-600 hover:bg-amber-100" : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
+                        )}>
+                        {habit.status === "active" ? "Pause" : "Resume"}
+                      </button>
+                      <button onClick={() => handleDelete(habit.id)}
+                        className="text-xs px-2.5 py-1.5 rounded-xl font-medium bg-red-50 text-red-650 hover:bg-red-100 transition-colors">
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

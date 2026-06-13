@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { mockGoals } from "@/data/mockData";
 import { getStatusColor, getProgressColor, cn } from "@/lib/utils";
 import { Plus, Search, Target, Edit, Trash2, X } from "lucide-react";
@@ -7,12 +7,27 @@ import type { Goal } from "@/types";
 import { GOAL_CATEGORIES } from "@/constants";
 
 export default function GoalsPage() {
-  const [goals, setGoals] = useState<Goal[]>(mockGoals);
+  const [goals, setGoals] = useState<Goal[]>(() => {
+    const cached = localStorage.getItem("droms_goals_data");
+    return cached ? JSON.parse(cached) : mockGoals;
+  });
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   const [showModal, setShowModal] = useState(false);
   const [editGoal, setEditGoal] = useState<Goal | null>(null);
-  const [form, setForm] = useState({ title: "", category: GOAL_CATEGORIES[0], milestone: "", deadline: "", priority: "medium" as Goal["priority"] });
+  const [form, setForm] = useState({ 
+    title: "", 
+    category: GOAL_CATEGORIES[0], 
+    milestone: "", 
+    deadline: "", 
+    priority: "medium" as Goal["priority"],
+    status: "on-track" as Goal["status"],
+    progress: 0
+  });
+
+  useEffect(() => {
+    localStorage.setItem("droms_goals_data", JSON.stringify(goals));
+  }, [goals]);
 
   const filtered = goals.filter(g => {
     const m = g.title.toLowerCase().includes(search.toLowerCase()) || g.category.toLowerCase().includes(search.toLowerCase());
@@ -21,13 +36,29 @@ export default function GoalsPage() {
 
   const openCreate = () => {
     setEditGoal(null);
-    setForm({ title: "", category: GOAL_CATEGORIES[0], milestone: "", deadline: "", priority: "medium" });
+    setForm({ 
+      title: "", 
+      category: GOAL_CATEGORIES[0], 
+      milestone: "", 
+      deadline: "", 
+      priority: "medium",
+      status: "on-track",
+      progress: 0
+    });
     setShowModal(true);
   };
 
   const openEdit = (goal: Goal) => {
     setEditGoal(goal);
-    setForm({ title: goal.title, category: goal.category, milestone: goal.milestone, deadline: goal.deadline, priority: goal.priority });
+    setForm({ 
+      title: goal.title, 
+      category: goal.category, 
+      milestone: goal.milestone, 
+      deadline: goal.deadline, 
+      priority: goal.priority,
+      status: goal.status,
+      progress: goal.progress
+    });
     setShowModal(true);
   };
 
@@ -37,7 +68,7 @@ export default function GoalsPage() {
       setGoals(prev => prev.map(g => g.id === editGoal.id ? { ...g, ...form } : g));
       toast.success("Goal updated!");
     } else {
-      const newGoal: Goal = { id: `g${Date.now()}`, ...form, progress: 0, status: "on-track" };
+      const newGoal: Goal = { id: `g${Date.now()}`, ...form };
       setGoals(prev => [newGoal, ...prev]);
       toast.success("Goal created! Let's crush it 🎯");
     }
@@ -183,6 +214,25 @@ export default function GoalsPage() {
                 <label className="block text-sm font-medium text-slate-700 mb-1.5">Deadline *</label>
                 <input type="date" value={form.deadline} onChange={e => setForm({...form, deadline: e.target.value})}
                   className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-primary-400 text-sm" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Status</label>
+                  <select value={form.status} onChange={e => setForm({...form, status: e.target.value as Goal["status"]})}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-primary-400 text-sm">
+                    <option value="on-track">On Track</option>
+                    <option value="at-risk">At Risk</option>
+                    <option value="completed">Completed</option>
+                    <option value="overdue">Overdue</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Progress ({form.progress}%)</label>
+                  <div className="flex items-center gap-2 h-[42px]">
+                    <input type="range" min="0" max="100" value={form.progress} onChange={e => setForm({...form, progress: parseInt(e.target.value) || 0})}
+                      className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-primary-650" />
+                  </div>
+                </div>
               </div>
             </div>
             <div className="flex gap-3 p-6 border-t border-slate-100">

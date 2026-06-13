@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { mockDreams } from "@/data/mockData";
 import { getStatusColor, getProgressColor, cn } from "@/lib/utils";
 import { Plus, Search, Filter, Sparkles, Edit, Trash2, X } from "lucide-react";
@@ -7,7 +7,15 @@ import type { Dream } from "@/types";
 import { DREAM_CATEGORIES } from "@/constants";
 
 export default function DreamsPage() {
-  const [dreams, setDreams] = useState<Dream[]>(mockDreams);
+  const [dreams, setDreams] = useState<Dream[]>(() => {
+    const cached = localStorage.getItem("droms_dreams_data");
+    return cached ? JSON.parse(cached) : mockDreams;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("droms_dreams_data", JSON.stringify(dreams));
+  }, [dreams]);
+
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   const [showModal, setShowModal] = useState(false);

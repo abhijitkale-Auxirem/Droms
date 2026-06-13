@@ -2,12 +2,12 @@ import { Link } from "react-router-dom";
 import { CheckSquare, ArrowRight, Flame, BarChart2, Calendar, Bell, RefreshCw, Star } from "lucide-react";
 
 const habits = [
-  { emoji: "🧘", name: "Morning Meditation", streak: 42, rate: 94, category: "Wellness" },
-  { emoji: "📚", name: "Read 30 Minutes", streak: 28, rate: 88, category: "Learning" },
-  { emoji: "🏃", name: "Daily Exercise", streak: 19, rate: 78, category: "Fitness" },
-  { emoji: "✍️", name: "Journaling", streak: 35, rate: 85, category: "Mindset" },
-  { emoji: "💧", name: "Drink 8 Glasses Water", streak: 21, rate: 80, category: "Health" },
-  { emoji: "🙏", name: "Gratitude Practice", streak: 56, rate: 97, category: "Mindset" },
+  { emoji: "", name: "Morning Meditation", streak: 42, rate: 94, category: "Wellness" },
+  { emoji: "", name: "Read 30 Minutes", streak: 28, rate: 88, category: "Learning" },
+  { emoji: "", name: "Daily Exercise", streak: 19, rate: 78, category: "Fitness" },
+  { emoji: "", name: "Journaling", streak: 35, rate: 85, category: "Mindset" },
+  { emoji: "", name: "Drink 8 Glasses Water", streak: 21, rate: 80, category: "Health" },
+  { emoji: "", name: "Gratitude Practice", streak: 56, rate: 97, category: "Mindset" },
 ];
 
 const features = [

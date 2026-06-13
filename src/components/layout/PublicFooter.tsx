@@ -1,11 +1,12 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Sparkles, Twitter, Instagram, Linkedin, Youtube, Github, Mail, Phone, MapPin } from "lucide-react";
+import { SOCIAL_LINKS } from "@/constants";
 
 const footerLinks = {
   Company: [
     { label: "About Us", href: "/about" },
     { label: "Careers", href: "/careers" },
-    { label: "Press", href: "/press" },
     { label: "Blog", href: "/blog" },
     { label: "Contact", href: "/contact" },
   ],
@@ -32,6 +33,18 @@ const footerLinks = {
 };
 
 export default function PublicFooter() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+
+  const handleNewsletterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email.trim()) {
+      navigate(`/register?email=${encodeURIComponent(email)}`);
+    } else {
+      navigate("/register");
+    }
+  };
+
   return (
     <footer className="bg-droms-dark text-slate-300 relative overflow-hidden">
       {/* Wave Top */}
@@ -55,16 +68,18 @@ export default function PublicFooter() {
             Start Your Dream Journey Today
           </h3>
           <p className="text-white/80 mb-6 relative">Join 156,000+ achievers transforming their dreams into reality</p>
-          <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto relative">
-            <input
+          <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto relative">
+            {/* <input
               type="email"
               placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="flex-1 px-4 py-3 rounded-xl bg-white/20 backdrop-blur border border-white/30 text-white placeholder:text-white/60 focus:outline-none focus:border-white/60"
-            />
-            <button className="bg-accent hover:bg-yellow-500 text-droms-dark font-bold px-6 py-3 rounded-xl transition-colors whitespace-nowrap">
+            /> */}
+            <button type="submit" className="bg-accent hover:bg-yellow-500 text-droms-dark font-bold px-6 py-3 rounded-xl transition-colors whitespace-nowrap">
               Get Started Free
             </button>
-          </div>
+          </form>
         </div>
 
         {/* Links Grid */}
@@ -81,8 +96,21 @@ export default function PublicFooter() {
               Transform your dreams into reality through AI-powered goal planning and personal growth.
             </p>
             <div className="flex items-center gap-3">
-              {[Twitter, Instagram, Linkedin, Youtube, Github].map((Icon, i) => (
-                <a key={i} href="#" className="w-8 h-8 rounded-lg bg-white/10 hover:bg-primary-600 flex items-center justify-center transition-colors">
+              {[
+                { Icon: Twitter, href: SOCIAL_LINKS.twitter, label: "Twitter" },
+                { Icon: Instagram, href: SOCIAL_LINKS.instagram, label: "Instagram" },
+                { Icon: Linkedin, href: SOCIAL_LINKS.linkedin, label: "LinkedIn" },
+                { Icon: Youtube, href: SOCIAL_LINKS.youtube, label: "YouTube" },
+                { Icon: Github, href: SOCIAL_LINKS.github, label: "GitHub" },
+              ].map(({ Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="w-8 h-8 rounded-lg bg-white/10 hover:bg-primary-600 flex items-center justify-center transition-all hover:scale-110"
+                >
                   <Icon className="w-4 h-4" />
                 </a>
               ))}

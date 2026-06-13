@@ -25,16 +25,16 @@ export const mockGoals: Goal[] = [
 ];
 
 export const mockHabits: Habit[] = [
-  { id: "h1", title: "Morning Meditation", frequency: "daily", streak: 42, completionRate: 94, status: "active", category: "Wellness", icon: "🧘" },
-  { id: "h2", title: "Read 30 Minutes", frequency: "daily", streak: 28, completionRate: 88, status: "active", category: "Learning", icon: "📚" },
-  { id: "h3", title: "Exercise / Run", frequency: "daily", streak: 19, completionRate: 78, status: "active", category: "Fitness", icon: "🏃" },
-  { id: "h4", title: "Write in Journal", frequency: "daily", streak: 35, completionRate: 85, status: "active", category: "Personal", icon: "✍️" },
-  { id: "h5", title: "Cold Shower", frequency: "daily", streak: 14, completionRate: 72, status: "active", category: "Wellness", icon: "🚿" },
-  { id: "h6", title: "No Social Media Before 10am", frequency: "daily", streak: 7, completionRate: 65, status: "active", category: "Productivity", icon: "📵" },
-  { id: "h7", title: "Review Weekly Goals", frequency: "weekly", streak: 12, completionRate: 92, status: "active", category: "Productivity", icon: "🎯" },
-  { id: "h8", title: "Drink 8 Glasses Water", frequency: "daily", streak: 21, completionRate: 80, status: "active", category: "Health", icon: "💧" },
-  { id: "h9", title: "Gratitude Practice", frequency: "daily", streak: 56, completionRate: 97, status: "active", category: "Mindset", icon: "🙏" },
-  { id: "h10", title: "Network / Reach Out", frequency: "weekly", streak: 8, completionRate: 75, status: "active", category: "Career", icon: "🤝" },
+  { id: "h1", title: "Morning Meditation", frequency: "daily", streak: 42, completionRate: 94, status: "active", category: "Wellness", icon: "" },
+  { id: "h2", title: "Read 30 Minutes", frequency: "daily", streak: 28, completionRate: 88, status: "active", category: "Learning", icon: "" },
+  { id: "h3", title: "Exercise / Run", frequency: "daily", streak: 19, completionRate: 78, status: "active", category: "Fitness", icon: "" },
+  { id: "h4", title: "Write in Journal", frequency: "daily", streak: 35, completionRate: 85, status: "active", category: "Personal", icon: "" },
+  { id: "h5", title: "Cold Shower", frequency: "daily", streak: 14, completionRate: 72, status: "active", category: "Wellness", icon: "" },
+  { id: "h6", title: "No Social Media Before 10am", frequency: "daily", streak: 7, completionRate: 65, status: "active", category: "Productivity", icon: "" },
+  { id: "h7", title: "Review Weekly Goals", frequency: "weekly", streak: 12, completionRate: 92, status: "active", category: "Productivity", icon: "" },
+  { id: "h8", title: "Drink 8 Glasses Water", frequency: "daily", streak: 21, completionRate: 80, status: "active", category: "Health", icon: "" },
+  { id: "h9", title: "Gratitude Practice", frequency: "daily", streak: 56, completionRate: 97, status: "active", category: "Mindset", icon: "" },
+  { id: "h10", title: "Network / Reach Out", frequency: "weekly", streak: 8, completionRate: 75, status: "active", category: "Career", icon: "" },
 ];
 
 export const mockCourses: Course[] = [
@@ -56,14 +56,14 @@ export const mockFinancialGoals: FinancialGoal[] = [
 ];
 
 export const mockAchievements: Achievement[] = [
-  { id: "a1", title: "Dream Architect", description: "Created your first 5 dreams", icon: "🏆", earnedAt: "2024-02-01", category: "Dreams", points: 100 },
-  { id: "a2", title: "Habit Hero", description: "Maintained a 30-day streak", icon: "🔥", earnedAt: "2024-02-15", category: "Habits", points: 200 },
-  { id: "a3", title: "Goal Crusher", description: "Completed 10 goals", icon: "🎯", earnedAt: "2024-03-01", category: "Goals", points: 300 },
-  { id: "a4", title: "Knowledge Seeker", description: "Completed first course", icon: "📚", earnedAt: "2024-01-20", category: "Learning", points: 150 },
-  { id: "a5", title: "Wellness Warrior", description: "30 consecutive wellness check-ins", icon: "💪", earnedAt: "2024-03-10", category: "Wellness", points: 250 },
-  { id: "a6", title: "Financial Pioneer", description: "Set up all financial goals", icon: "💰", earnedAt: "2024-02-28", category: "Finance", points: 180 },
-  { id: "a7", title: "Community Builder", description: "Joined 3 accountability groups", icon: "🤝", earnedAt: "2024-03-05", category: "Community", points: 120 },
-  { id: "a8", title: "Vision Visionary", description: "Created your first vision board", icon: "🌟", earnedAt: "2024-01-25", category: "Vision", points: 90 },
+  { id: "a1", title: "Dream Architect", description: "Created your first 5 dreams", icon: "", earnedAt: "2024-02-01", category: "Dreams", points: 100 },
+  { id: "a2", title: "Habit Hero", description: "Maintained a 30-day streak", icon: "", earnedAt: "2024-02-15", category: "Habits", points: 200 },
+  { id: "a3", title: "Goal Crusher", description: "Completed 10 goals", icon: "", earnedAt: "2024-03-01", category: "Goals", points: 300 },
+  { id: "a4", title: "Knowledge Seeker", description: "Completed first course", icon: "", earnedAt: "2024-01-20", category: "Learning", points: 150 },
+  { id: "a5", title: "Wellness Warrior", description: "30 consecutive wellness check-ins", icon: "", earnedAt: "2024-03-10", category: "Wellness", points: 250 },
+  { id: "a6", title: "Financial Pioneer", description: "Set up all financial goals", icon: "", earnedAt: "2024-02-28", category: "Finance", points: 180 },
+  { id: "a7", title: "Community Builder", description: "Joined 3 accountability groups", icon: "", earnedAt: "2024-03-05", category: "Community", points: 120 },
+  { id: "a8", title: "Vision Visionary", description: "Created your first vision board", icon: "", earnedAt: "2024-01-25", category: "Vision", points: 90 },
   { id: "a9", title: "50-Day Streak Legend", description: "Maintained habits for 50 days straight", icon: "⚡", earnedAt: "2024-03-15", category: "Habits", points: 500 },
 ];
 

@@ -1,5 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GraduationCap, ArrowRight, BookOpen, Award, Play, Users, Star, Clock } from "lucide-react";
+import { useAuthStore } from "@/store/authStore";
 
 const categories = [
   { name: "Leadership & Management", courses: 24, icon: "👑", color: "bg-purple-50 border-purple-200" },
@@ -17,6 +18,17 @@ const featuredCourses = [
 ];
 
 export default function AcademyPublicPage() {
+  const { isAuthenticated } = useAuthStore();
+  const navigate = useNavigate();
+
+  const handleCourseClick = () => {
+    if (isAuthenticated) {
+      navigate("/dashboard/courses");
+    } else {
+      navigate("/register");
+    }
+  };
+
   return (
     <div className="pt-20">
       <section className="py-24 bg-gradient-dark relative overflow-hidden">
@@ -72,7 +84,11 @@ export default function AcademyPublicPage() {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {featuredCourses.map(course => (
-              <div key={course.title} className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <div 
+                key={course.title} 
+                onClick={handleCourseClick}
+                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+              >
                 <div className="relative">
                   <img src={course.img} alt={course.title} className="w-full h-44 object-cover" />
                   <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">

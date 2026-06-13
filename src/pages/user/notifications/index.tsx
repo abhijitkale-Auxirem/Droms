@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Bell, Target, CheckSquare, Brain, Users, Award, Check, Trash2 } from "lucide-react";
 import { mockNotifications } from "@/data/mockData";
 import type { Notification } from "@/types";
@@ -12,8 +12,15 @@ const typeColors: Record<string, string> = {
 };
 
 export default function NotificationsPage() {
-  const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
+  const [notifications, setNotifications] = useState<Notification[]>(() => {
+    const cached = localStorage.getItem("droms_notifications_data");
+    return cached ? JSON.parse(cached) : mockNotifications;
+  });
   const [filter, setFilter] = useState("all");
+
+  useEffect(() => {
+    localStorage.setItem("droms_notifications_data", JSON.stringify(notifications));
+  }, [notifications]);
 
   const markRead = (id: string) => setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
   const markAllRead = () => { setNotifications(prev => prev.map(n => ({ ...n, read: true }))); toast.success("All marked as read"); };

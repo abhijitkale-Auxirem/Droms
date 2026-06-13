@@ -330,25 +330,44 @@ export function AdminSupportPage() {
 export function AdminRolesPage() {
   return <AdminTablePage
     title="Roles & Permissions"
-    subtitle="Manage admin roles and access levels"
+    subtitle="Manage user types, roles, and platform permissions"
     addLabel="Create Role"
-    columns={["Role Name", "Description", "Users", "Permissions", "Status"]}
+    columns={["Role Name", "Description", "Flow / Actions", "Status"]}
     rows={[
-      { role: "Super Admin", desc: "Full platform access", users: "2", perms: "All permissions", status: <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">Restricted</span> },
-      { role: "Admin", desc: "Full management access", users: "5", perms: "Users, Revenue, Content, Support", status: <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Active</span> },
-      { role: "Support Agent", desc: "Support ticket management", users: "12", perms: "Support, Users (read)", status: <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Active</span> },
-      { role: "Content Manager", desc: "Content creation and moderation", users: "4", perms: "Content, Courses, Blog", status: <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Active</span> },
-      { role: "Community Moderator", desc: "Community and challenges", users: "8", perms: "Communities, Challenges, Reports", status: <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Active</span> },
+      { role: "Individual User", desc: "Personal aspirations & tracking", flow: "Register → Define Dreams → Create Goals → Build Habits → Achieve Milestones", status: <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Active</span> },
+      { role: "Student", desc: "Academic growth & studies", flow: "Set Academic Goals → Track Learning → Build Study Habits → Milestones", status: <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Active</span> },
+      { role: "Professional", desc: "Career development", flow: "Define Career Goals → Build Skills → Track Achievements → Advance", status: <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Active</span> },
+      { role: "Entrepreneur", desc: "Business vision & KPIs", flow: "Set Business Vision → Create Growth Plan → Monitor KPIs → Goals", status: <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Active</span> },
+      { role: "Coach / Mentor", desc: "User guidance & reviews", flow: "Guide Users → Monitor Progress → Provide Accountability → Celebrate", status: <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">Verified</span> },
+      { role: "Community Leader", desc: "Moderates groups & challenges", flow: "Manage Groups → Organize Challenges → Encourage → Growth", status: <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">Moderator</span> },
+      { role: "Admin", desc: "Ecosystem governance & metrics", flow: "Manage Platform → Monitor Communities → Analyze Growth → Optimize", status: <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">System Role</span> },
     ]}
   />;
 }
 
 export function AdminPermissionsPage() {
+  const rolesList = [
+    "Individual User", "Student", "Professional", "Entrepreneur", "Coach / Mentor", "Community Leader", "Admin"
+  ];
+
+  const permissions = [
+    { module: "Dream & Goal Management", grants: [true, true, true, true, true, true, true] },
+    { module: "AI Life Coach Access", grants: [true, true, true, true, false, false, true] },
+    { module: "Habit & Routine Tracker", grants: [true, true, true, true, false, false, true] },
+    { module: "Personal Growth Academy", grants: [true, true, true, true, true, true, true] },
+    { module: "Financial Goal Planning", grants: [true, false, true, true, false, false, true] },
+    { module: "Community & Accountability", grants: [true, true, true, true, true, true, true] },
+    { module: "Success Analytics", grants: [true, true, true, true, true, true, true] },
+    { module: "User Management", grants: [false, false, false, false, true, true, true] },
+    { module: "Platform Moderation", grants: [false, false, false, false, false, true, true] },
+    { module: "System Settings", grants: [false, false, false, false, false, false, true] },
+  ];
+
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold font-display text-slate-900">Permissions Matrix</h1>
-        <p className="text-slate-500 text-sm mt-1">Configure fine-grained permissions for each role</p>
+        <p className="text-slate-500 text-sm mt-1">Configure permissions for each user type</p>
       </div>
       <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
         <div className="overflow-x-auto">
@@ -356,18 +375,18 @@ export function AdminPermissionsPage() {
             <thead>
               <tr className="bg-slate-50 border-b border-slate-200">
                 <th className="text-left text-xs font-semibold text-slate-500 uppercase px-6 py-4">Module</th>
-                {["Super Admin", "Admin", "Support", "Content Manager", "Moderator"].map(r => (
-                  <th key={r} className="text-center text-xs font-semibold text-slate-500 uppercase px-4 py-4">{r}</th>
+                {rolesList.map(r => (
+                  <th key={r} className="text-center text-xs font-semibold text-slate-500 uppercase px-4 py-4 min-w-[120px]">{r}</th>
                 ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {["User Management", "Revenue & Billing", "Content Management", "Community", "Courses", "Support Tickets", "Analytics", "Reports", "Roles & Permissions", "Settings"].map(module => (
-                <tr key={module} className="hover:bg-slate-50">
-                  <td className="px-6 py-3 text-sm font-medium text-slate-900">{module}</td>
-                  {[true, module !== "Revenue & Billing" && module !== "Roles & Permissions", module === "Support Tickets" || module === "User Management", module === "Content Management" || module === "Courses", module === "Community" || module === "Reports"].map((perm, i) => (
+              {permissions.map(p => (
+                <tr key={p.module} className="hover:bg-slate-50">
+                  <td className="px-6 py-3 text-sm font-medium text-slate-900">{p.module}</td>
+                  {p.grants.map((perm, i) => (
                     <td key={i} className="px-4 py-3 text-center">
-                      {perm ? <span className="text-green-600">✓</span> : <span className="text-slate-300">—</span>}
+                      {perm ? <span className="text-green-600 font-bold">✓</span> : <span className="text-slate-300">—</span>}
                     </td>
                   ))}
                 </tr>

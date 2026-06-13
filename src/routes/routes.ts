@@ -11,7 +11,7 @@ export const publicRoutePaths = [
 
 // src/routes/AuthRoutes.tsx - Auth route paths
 export const authRoutePaths = [
-  "/login", "/register", "/forgot-password", "/reset-password",
+  "/login", "/register", "/signup", "/forgot-password", "/reset-password",
   "/otp-login", "/verify-account",
 ];
 

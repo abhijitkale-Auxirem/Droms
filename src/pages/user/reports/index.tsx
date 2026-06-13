@@ -4,12 +4,12 @@ import { downloadCSV, downloadJSON } from "@/lib/utils";
 import { toast } from "sonner";
 
 const reports = [
-  { id: "goals", title: "Goals Report", desc: "Complete goals with progress, milestones, and status", icon: "🎯", lastGenerated: "Jan 15, 2025", count: mockGoals.length },
-  { id: "dreams", title: "Dreams Report", desc: "All dreams with categories, priorities, and progress", icon: "✨", lastGenerated: "Jan 15, 2025", count: mockDreams.length },
-  { id: "habits", title: "Habit Analytics Report", desc: "Habit streaks, completion rates, and performance", icon: "🔥", lastGenerated: "Jan 15, 2025", count: mockHabits.length },
-  { id: "finance", title: "Financial Goals Report", desc: "Savings, investments, and debt reduction progress", icon: "💰", lastGenerated: "Jan 14, 2025", count: mockFinancialGoals.length },
-  { id: "progress", title: "Monthly Progress Report", desc: "Overall success metrics and achievement summary", icon: "📊", lastGenerated: "Jan 1, 2025", count: null },
-  { id: "wellness", title: "Wellness Analytics", desc: "Fitness, sleep, nutrition, and wellness trends", icon: "💪", lastGenerated: "Jan 15, 2025", count: null },
+  { id: "goals", title: "Goals Report", desc: "Complete goals with progress, milestones, and status", icon: "", lastGenerated: "Jan 15, 2025", count: mockGoals.length },
+  { id: "dreams", title: "Dreams Report", desc: "All dreams with categories, priorities, and progress", icon: "", lastGenerated: "Jan 15, 2025", count: mockDreams.length },
+  { id: "habits", title: "Habit Analytics Report", desc: "Habit streaks, completion rates, and performance", icon: "", lastGenerated: "Jan 15, 2025", count: mockHabits.length },
+  { id: "finance", title: "Financial Goals Report", desc: "Savings, investments, and debt reduction progress", icon: "", lastGenerated: "Jan 14, 2025", count: mockFinancialGoals.length },
+  { id: "progress", title: "Monthly Progress Report", desc: "Overall success metrics and achievement summary", icon: "", lastGenerated: "Jan 1, 2025", count: null },
+  { id: "wellness", title: "Wellness Analytics", desc: "Fitness, sleep, nutrition, and wellness trends", icon: "", lastGenerated: "Jan 15, 2025", count: null },
 ];
 
 const dataMap: Record<string, unknown[]> = {

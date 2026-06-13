@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, Eye, EyeOff, Sparkles, ArrowRight, Smartphone } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, Sparkles, ArrowRight, Smartphone, Shield, User, GraduationCap, Briefcase, Rocket, Brain, Users } from "lucide-react";
 import { login } from "@/lib/auth";
 import { useAuthStore } from "@/store/authStore";
-import { DEMO_EMAIL, DEMO_PASSWORD } from "@/constants";
+import { 
+  DEMO_EMAIL, DEMO_PASSWORD, ADMIN_EMAIL, ADMIN_PASSWORD,
+  STUDENT_EMAIL, PROFESSIONAL_EMAIL, ENTREPRENEUR_EMAIL, COACH_EMAIL, LEADER_EMAIL
+} from "@/constants";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -40,17 +43,22 @@ export default function LoginPage() {
     setLoading(false);
   };
 
-  const handleDemoLogin = async () => {
+  const handleRoleLogin = async (roleEmail: string, rolePassword: string, roleName: string, path: string = "/dashboard") => {
     setLoading(true);
     await new Promise(r => setTimeout(r, 600));
-    const result = login(DEMO_EMAIL, DEMO_PASSWORD);
+    const result = login(roleEmail, rolePassword);
     if (result.success && result.user) {
       storeLogin(result.user);
-      toast.success("Welcome to Droms Demo! 🌟");
-      navigate("/dashboard", { replace: true });
+      toast.success(`Logged in as ${roleName}! 🌟`);
+      navigate(path, { replace: true });
+    } else {
+      toast.error(result.error || "Login failed");
     }
     setLoading(false);
   };
+
+  const handleDemoLogin = () => handleRoleLogin(DEMO_EMAIL, DEMO_PASSWORD, "Standard User");
+  const handleAdminLogin = () => handleRoleLogin(ADMIN_EMAIL, ADMIN_PASSWORD, "Administrator", "/admin");
 
   const handleOtpInput = (i: number, val: string) => {
     if (val.length > 1) return;
@@ -114,18 +122,73 @@ export default function LoginPage() {
         </div>
 
         {/* Demo Banner */}
-        <div className="bg-gradient-to-r from-primary-50 to-blue-50 border border-primary-200 rounded-xl p-3 mb-5 flex items-center justify-between">
-          <div>
-            <p className="text-xs font-semibold text-primary-700">Demo Account Ready</p>
-            <p className="text-xs text-slate-500">{DEMO_EMAIL} / {DEMO_PASSWORD}</p>
+        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 mb-6 space-y-4">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Demo Accounts Ready</span>
+            <span className="text-[10px] font-medium text-slate-400 bg-slate-200/60 px-2 py-0.5 rounded-full">Click to auto-login</span>
           </div>
-          <button
-            onClick={handleDemoLogin}
-            disabled={loading}
-            className="bg-primary-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg hover:bg-primary-700 transition-colors flex items-center gap-1"
-          >
-            Demo Login <ArrowRight className="w-3 h-3" />
-          </button>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {/* Standard User */}
+            <div 
+              onClick={handleDemoLogin}
+              className="flex items-center justify-between p-3 rounded-xl border border-primary-100 bg-gradient-to-r from-primary-50/50 to-blue-50/50 hover:border-primary-300 hover:shadow-sm transition-all cursor-pointer group"
+            >
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-semibold text-primary-700 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5" /> User (Pro Plan)
+                </p>
+                <p className="text-[10px] text-slate-500 truncate mt-1">{DEMO_EMAIL}</p>
+                <p className="text-[10px] text-slate-400 font-mono">{DEMO_PASSWORD}</p>
+              </div>
+              <div className="w-7 h-7 rounded-lg bg-primary-600 text-white flex items-center justify-center group-hover:bg-primary-700 transition-colors flex-shrink-0 ml-2">
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </div>
+
+            {/* Admin User */}
+            <div 
+              onClick={handleAdminLogin}
+              className="flex items-center justify-between p-3 rounded-xl border border-red-100 bg-gradient-to-r from-red-50/30 to-amber-50/30 hover:border-red-300 hover:shadow-sm transition-all cursor-pointer group"
+            >
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-semibold text-red-700 flex items-center gap-1.5">
+                  <Shield className="w-3.5 h-3.5 text-red-600" /> Admin (Enterprise)
+                </p>
+                <p className="text-[10px] text-slate-500 truncate mt-1">{ADMIN_EMAIL}</p>
+                <p className="text-[10px] text-slate-400 font-mono">{ADMIN_PASSWORD}</p>
+              </div>
+              <div className="w-7 h-7 rounded-lg bg-red-600 text-white flex items-center justify-center group-hover:bg-red-700 transition-colors flex-shrink-0 ml-2">
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </div>
+          </div>
+
+          {/* Other Roles */}
+          <div className="border-t border-slate-200/60 pt-3">
+            <p className="text-[10px] font-semibold text-slate-400 mb-2">Other Demo Profiles:</p>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+              {[
+                { label: "Student", email: STUDENT_EMAIL, icon: GraduationCap, color: "text-purple-700 bg-purple-50/70 hover:bg-purple-100/90 border-purple-200" },
+                { label: "Professional", email: PROFESSIONAL_EMAIL, icon: Briefcase, color: "text-blue-700 bg-blue-50/70 hover:bg-blue-100/90 border-blue-200" },
+                { label: "Entrepreneur", email: ENTREPRENEUR_EMAIL, icon: Rocket, color: "text-orange-700 bg-orange-50/70 hover:bg-orange-100/90 border-orange-200" },
+                { label: "Coach", email: COACH_EMAIL, icon: Brain, color: "text-pink-700 bg-pink-50/70 hover:bg-pink-100/90 border-pink-200" },
+                { label: "Community Leader", email: LEADER_EMAIL, icon: Users, color: "text-teal-700 bg-teal-50/70 hover:bg-teal-100/90 border-teal-200" },
+              ].map(role => (
+                <button
+                  key={role.label}
+                  onClick={() => handleRoleLogin(role.email, "Demo@123", role.label)}
+                  className={cn(
+                    "flex items-center gap-1.5 px-2 py-1.5 rounded-xl border text-[10px] font-semibold transition-all text-left",
+                    role.color
+                  )}
+                >
+                  <role.icon className="w-3.5 h-3.5 flex-shrink-0" />
+                  <span className="truncate">{role.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Method Toggle */}

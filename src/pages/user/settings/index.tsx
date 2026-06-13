@@ -8,13 +8,12 @@ const tabs = [
   { id: "profile", label: "Profile", icon: User },
   { id: "security", label: "Security", icon: Shield },
   { id: "notifications", label: "Notifications", icon: Bell },
-  { id: "appearance", label: "Appearance", icon: Palette },
   { id: "language", label: "Language", icon: Globe },
   { id: "subscription", label: "Subscription", icon: CreditCard },
 ];
 
 export default function SettingsPage() {
-  const { user } = useAuthStore();
+  const { user, login: updateAuthUser } = useAuthStore();
   const [activeTab, setActiveTab] = useState("profile");
   const [profileForm, setProfileForm] = useState({
     name: user?.name || "", email: user?.email || "", bio: "Ambitious entrepreneur on a mission to build impactful tech products and achieve financial freedom by 35.",
@@ -24,7 +23,47 @@ export default function SettingsPage() {
     goalAlerts: true, habitReminders: true, aiInsights: true, communityUpdates: false, weeklyReport: true, achievements: true,
   });
 
-  const handleSaveProfile = () => { toast.success("Profile updated successfully!"); };
+  const handleSaveProfile = () => { 
+    if (user) {
+      updateAuthUser({ ...user, name: profileForm.name, email: profileForm.email });
+      toast.success("Profile updated successfully!"); 
+    }
+  };
+
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error("File size exceeds 2MB limit.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const dataUrl = reader.result as string;
+      if (user) {
+        updateAuthUser({ ...user, avatar: dataUrl });
+        toast.success("Profile photo updated successfully!");
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleUpgrade = (tier: "pro" | "enterprise") => {
+    if (user) {
+      updateAuthUser({ ...user, plan: tier });
+      toast.success(`Successfully upgraded to ${tier === "pro" ? "Pro" : "Enterprise"} plan! 🎉`);
+    }
+  };
+
+  const handleCancelSubscription = () => {
+    const confirmCancel = window.confirm("Are you sure you want to cancel your subscription? You will lose access to premium features.");
+    if (confirmCancel && user) {
+      updateAuthUser({ ...user, plan: "free" });
+      toast.success("Subscription cancelled successfully. Plan downgraded to Free.");
+    }
+  };
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
@@ -57,9 +96,21 @@ export default function SettingsPage() {
               <h2 className="text-lg font-semibold text-slate-900 border-b border-slate-100 pb-4">Profile Information</h2>
               <div className="flex items-center gap-4 mb-6">
                 <img src={user?.avatar || `https://ui-avatars.com/api/?name=${user?.name}&background=7C3AED&color=fff`}
-                  alt={user?.name} className="w-16 h-16 rounded-2xl ring-4 ring-primary-100" />
+                  alt={user?.name} className="w-16 h-16 rounded-2xl object-cover ring-4 ring-primary-100" />
                 <div>
-                  <button className="text-sm bg-primary-50 text-primary-600 font-medium px-4 py-2 rounded-xl hover:bg-primary-100 transition-colors">Change Photo</button>
+                  <input 
+                    type="file" 
+                    id="avatar-upload" 
+                    accept="image/*" 
+                    className="hidden" 
+                    onChange={handleAvatarChange} 
+                  />
+                  <label 
+                    htmlFor="avatar-upload" 
+                    className="text-sm bg-primary-50 text-primary-600 font-medium px-4 py-2 rounded-xl hover:bg-primary-100 transition-colors cursor-pointer inline-block"
+                  >
+                    Change Photo
+                  </label>
                   <p className="text-xs text-slate-500 mt-1">JPG, PNG or GIF. Max 2MB.</p>
                 </div>
               </div>
@@ -144,28 +195,54 @@ export default function SettingsPage() {
           {activeTab === "subscription" && (
             <div className="space-y-5">
               <h2 className="text-lg font-semibold text-slate-900 border-b border-slate-100 pb-4">Subscription Plan</h2>
-              <div className="bg-gradient-to-br from-primary-600 to-blue-600 rounded-2xl p-6 text-white">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <p className="text-sm text-white/70">Current Plan</p>
-                    <p className="text-2xl font-bold font-display">Pro</p>
+              {user?.plan === "free" ? (
+                <div className="space-y-4">
+                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6">
+                    <p className="text-sm text-slate-500">Current Plan</p>
+                    <p className="text-2xl font-bold font-display text-slate-800">Free / Starter</p>
+                    <p className="text-sm text-slate-500 mt-2">Upgrade to premium plans to unlock the AI Coach, Unlimited Dreams, Net Worth Tracking, and more.</p>
                   </div>
-                  <span className="bg-accent text-droms-dark text-sm font-bold px-3 py-1 rounded-full">Active</span>
+                  <div className="grid grid-cols-2 gap-4">
+                    <button 
+                      onClick={() => handleUpgrade("pro")} 
+                      className="py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-colors"
+                    >
+                      Upgrade to Pro ($19/mo)
+                    </button>
+                    <button 
+                      onClick={() => handleUpgrade("enterprise")} 
+                      className="py-3 rounded-xl bg-slate-800 text-white font-semibold hover:bg-slate-900 transition-colors"
+                    >
+                      Upgrade to Enterprise ($49/mo)
+                    </button>
+                  </div>
                 </div>
-                <p className="text-white/80 text-sm mb-4">Your plan renews on February 15, 2025 • $19/month</p>
-                <div className="grid grid-cols-2 gap-3">
-                  {["Unlimited Dreams & Goals", "AI Coach (50/mo)", "5 Vision Boards", "All Integrations"].map(f => (
-                    <div key={f} className="flex items-center gap-2 text-sm text-white/80">
-                      <div className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center"><div className="w-2 h-2 rounded-full bg-white" /></div>
-                      {f}
+              ) : (
+                <div className="space-y-4">
+                  <div className="bg-gradient-to-br from-primary-600 to-blue-600 rounded-2xl p-6 text-white">
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <p className="text-sm text-white/70">Current Plan</p>
+                        <p className="text-2xl font-bold font-display capitalize">{user?.plan}</p>
+                      </div>
+                      <span className="bg-accent text-droms-dark text-sm font-bold px-3 py-1 rounded-full">Active</span>
                     </div>
-                  ))}
+                    <p className="text-white/80 text-sm mb-4">Your plan renews on February 15, 2026 • {user?.plan === "pro" ? "$19/month" : "$49/month"}</p>
+                    <div className="grid grid-cols-2 gap-3">
+                      {["Unlimited Dreams & Goals", "AI Coach (50/mo)", "5 Vision Boards", "All Integrations"].map(f => (
+                        <div key={f} className="flex items-center gap-2 text-sm text-white/80">
+                          <div className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center"><div className="w-2 h-2 rounded-full bg-white" /></div>
+                          {f}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <button onClick={() => toast.info("Upgrade/change flow coming soon!")} className="py-3 rounded-xl bg-primary-50 text-primary-600 font-semibold hover:bg-primary-100 transition-colors">Manage Subscription</button>
+                    <button onClick={handleCancelSubscription} className="py-3 rounded-xl bg-red-50 text-red-600 font-semibold hover:bg-red-100 transition-colors">Cancel Subscription</button>
+                  </div>
                 </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <button onClick={() => toast.info("Upgrade flow coming soon!")} className="py-3 rounded-xl bg-primary-50 text-primary-600 font-semibold hover:bg-primary-100 transition-colors">Upgrade to Enterprise</button>
-                <button onClick={() => toast.info("Cancellation flow coming soon!")} className="py-3 rounded-xl bg-red-50 text-red-600 font-semibold hover:bg-red-100 transition-colors">Cancel Plan</button>
-              </div>
+              )}
             </div>
           )}
 
@@ -200,34 +277,7 @@ export default function SettingsPage() {
             </div>
           )}
 
-          {activeTab === "appearance" && (
-            <div className="space-y-5">
-              <h2 className="text-lg font-semibold text-slate-900 border-b border-slate-100 pb-4">Appearance</h2>
-              <div>
-                <p className="font-medium text-slate-800 mb-3">Theme</p>
-                <div className="grid grid-cols-3 gap-3">
-                  {["Light", "Dark", "System"].map(theme => (
-                    <button key={theme} onClick={() => toast.success(`${theme} theme selected`)}
-                      className={cn("p-4 rounded-xl border-2 text-sm font-medium transition-all",
-                        theme === "Light" ? "border-primary-500 bg-primary-50 text-primary-700" : "border-slate-200 text-slate-600 hover:border-primary-300"
-                      )}>
-                      {theme}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <p className="font-medium text-slate-800 mb-3">Accent Color</p>
-                <div className="flex gap-3">
-                  {["#7C3AED", "#2563EB", "#22C55E", "#F59E0B", "#EF4444", "#EC4899"].map(color => (
-                    <button key={color} onClick={() => toast.success("Color updated!")}
-                      className="w-10 h-10 rounded-full border-4 border-white shadow-md hover:scale-110 transition-transform"
-                      style={{ background: color }} />
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
+         
 
           {activeTab === "language" && (
             <div className="space-y-5">

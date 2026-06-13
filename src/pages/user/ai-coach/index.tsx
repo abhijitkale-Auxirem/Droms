@@ -46,17 +46,28 @@ function formatMessage(text: string) {
 
 export default function AICoachPage() {
   const { user } = useAuthStore();
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      role: "assistant",
-      content: `Welcome back, ${user?.name?.split(" ")[0]}! 🌟\n\nI've analyzed your recent progress and I'm excited to work with you today. Your success score is at **847** — you're in peak form!\n\n**Today's Priority Insights:**\n• Your startup MVP is at 80% — push for 90% this week\n• Habit streak at 42 days — protect it at all costs\n• Financial goals are on track — consider increasing investment\n\nWhat would you like to focus on today? I'm here to help you crush your goals!`,
-      timestamp: new Date(),
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>(() => {
+    const cached = localStorage.getItem("droms_ai_coach_messages");
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      return parsed.map((m: any) => ({ ...m, timestamp: new Date(m.timestamp) }));
+    }
+    return [
+      {
+        id: "1",
+        role: "assistant",
+        content: `Welcome back, ${user?.name?.split(" ")[0]}! 🌟\n\nI've analyzed your recent progress and I'm excited to work with you today. Your success score is at **847** — you're in peak form!\n\n**Today's Priority Insights:**\n• Your startup MVP is at 80% — push for 90% this week\n• Habit streak at 42 days — protect it at all costs\n• Financial goals are on track — consider increasing investment\n\nWhat would you like to focus on today? I'm here to help you crush your goals!`,
+        timestamp: new Date(),
+      },
+    ];
+  });
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    localStorage.setItem("droms_ai_coach_messages", JSON.stringify(messages));
+  }, [messages]);
 
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
 

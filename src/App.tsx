@@ -29,6 +29,7 @@ import FAQPage from "@/pages/public/faq";
 import BlogPage from "@/pages/public/blog";
 import PrivacyPage from "@/pages/public/privacy";
 import TermsPage from "@/pages/public/terms";
+import DocsPage from "@/pages/public/docs";
 
 // Auth Pages
 import LoginPage from "@/pages/auth/login";
@@ -120,7 +121,7 @@ export default function App() {
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/solutions" element={<FeaturesPage />} />
         <Route path="/help" element={<ContactPage />} />
-        <Route path="/docs" element={<FeaturesPage />} />
+        <Route path="/docs" element={<DocsPage />} />
         <Route path="/cookies" element={<PrivacyPage />} />
         <Route path="/security" element={<AboutPage />} />
         <Route path="/careers" element={<AboutPage />} />
@@ -131,6 +132,7 @@ export default function App() {
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/signup" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/otp-login" element={<OTPLoginPage />} />

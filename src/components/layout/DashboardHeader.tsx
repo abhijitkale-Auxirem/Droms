@@ -40,10 +40,10 @@ export default function DashboardHeader({ onMenuToggle }: DashboardHeaderProps) 
       {/* Right Actions */}
       <div className="flex items-center gap-2 ml-auto">
         {/* Quick Add */}
-        <button className="hidden md:flex items-center gap-2 bg-gradient-purple text-white text-sm font-medium px-3 py-2 rounded-xl hover:shadow-glow-purple transition-all">
+        {/* <button className="hidden md:flex items-center gap-2 bg-gradient-purple text-white text-sm font-medium px-3 py-2 rounded-xl hover:shadow-glow-purple transition-all">
           <Plus className="w-4 h-4" />
           <span>Quick Add</span>
-        </button>
+        </button> */}
 
         {/* AI Chip */}
         <button
@@ -123,7 +123,7 @@ export default function DashboardHeader({ onMenuToggle }: DashboardHeaderProps) 
                 <p className="text-xs text-slate-500">{user?.email}</p>
               </div>
               <div className="py-1">
-                <Link to="/dashboard/settings" onClick={() => setShowProfile(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
+                <Link to="/dashboard/profile" onClick={() => setShowProfile(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
                   <User className="w-4 h-4 text-slate-400" /> Profile
                 </Link>
                 <Link to="/dashboard/settings" onClick={() => setShowProfile(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors">

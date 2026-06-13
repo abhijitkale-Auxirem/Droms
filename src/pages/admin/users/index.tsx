@@ -3,14 +3,14 @@ import { Search, Plus, MoreVertical, Filter, UserCheck, UserX, Mail } from "luci
 import { toast } from "sonner";
 
 const users = [
-  { id: "u1", name: "Sarah Mitchell", email: "sarah.m@gmail.com", plan: "Pro", joined: "Jan 15, 2025", lastActive: "Today", goals: 12, habits: 8, streak: 34, status: "active" },
-  { id: "u2", name: "David Park", email: "d.park@outlook.com", plan: "Enterprise", joined: "Jan 14, 2025", lastActive: "Today", goals: 24, habits: 15, streak: 62, status: "active" },
-  { id: "u3", name: "Maria Santos", email: "m.santos@yahoo.com", plan: "Pro", joined: "Nov 2, 2024", lastActive: "Yesterday", goals: 8, habits: 6, streak: 15, status: "active" },
-  { id: "u4", name: "James Liu", email: "james.l@gmail.com", plan: "Starter", joined: "Jan 13, 2025", lastActive: "2 days ago", goals: 3, habits: 2, streak: 3, status: "pending" },
-  { id: "u5", name: "Emma Chen", email: "emma.c@company.com", plan: "Pro", joined: "Oct 15, 2024", lastActive: "Today", goals: 18, habits: 11, streak: 89, status: "active" },
-  { id: "u6", name: "Alex Rivera", email: "alex.r@startup.io", plan: "Enterprise", joined: "Sep 8, 2024", lastActive: "Today", goals: 31, habits: 20, streak: 124, status: "active" },
-  { id: "u7", name: "Priya Sharma", email: "p.sharma@med.edu", plan: "Pro", joined: "Dec 1, 2024", lastActive: "3 days ago", goals: 14, habits: 9, streak: 28, status: "suspended" },
-  { id: "u8", name: "Michael Johnson", email: "m.johnson@corp.com", plan: "Enterprise", joined: "Aug 20, 2024", lastActive: "Today", goals: 42, habits: 18, streak: 201, status: "active" },
+  { id: "u1", name: "Sarah Mitchell", email: "sarah.m@gmail.com", plan: "Pro", role: "Student", joined: "Jan 15, 2025", lastActive: "Today", goals: 12, habits: 8, streak: 34, status: "active" },
+  { id: "u2", name: "David Park", email: "d.park@outlook.com", plan: "Enterprise", role: "Professional", joined: "Jan 14, 2025", lastActive: "Today", goals: 24, habits: 15, streak: 62, status: "active" },
+  { id: "u3", name: "Maria Santos", email: "m.santos@yahoo.com", plan: "Pro", role: "Individual User", joined: "Nov 2, 2024", lastActive: "Yesterday", goals: 8, habits: 6, streak: 15, status: "active" },
+  { id: "u4", name: "James Liu", email: "james.l@gmail.com", plan: "Starter", role: "Individual User", joined: "Jan 13, 2025", lastActive: "2 days ago", goals: 3, habits: 2, streak: 3, status: "pending" },
+  { id: "u5", name: "Emma Chen", email: "emma.c@company.com", plan: "Pro", role: "Coach / Mentor", joined: "Oct 15, 2024", lastActive: "Today", goals: 18, habits: 11, streak: 89, status: "active" },
+  { id: "u6", name: "Alex Rivera", email: "alex.r@startup.io", plan: "Enterprise", role: "Entrepreneur", joined: "Sep 8, 2024", lastActive: "Today", goals: 31, habits: 20, streak: 124, status: "active" },
+  { id: "u7", name: "Priya Sharma", email: "p.sharma@med.edu", plan: "Pro", role: "Community Leader", joined: "Dec 1, 2024", lastActive: "3 days ago", goals: 14, habits: 9, streak: 28, status: "suspended" },
+  { id: "u8", name: "Michael Johnson", email: "m.johnson@corp.com", plan: "Enterprise", role: "Admin", joined: "Aug 20, 2024", lastActive: "Today", goals: 42, habits: 18, streak: 201, status: "active" },
 ];
 
 export default function AdminUsersPage() {
@@ -68,7 +68,7 @@ export default function AdminUsersPage() {
           <table className="w-full">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-200">
-                {["User", "Plan", "Joined", "Last Active", "Goals", "Streak", "Status", "Actions"].map(h => (
+                {["User", "Role", "Plan", "Joined", "Last Active", "Goals", "Streak", "Status", "Actions"].map(h => (
                   <th key={h} className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide px-6 py-4">{h}</th>
                 ))}
               </tr>
@@ -81,6 +81,9 @@ export default function AdminUsersPage() {
                       <p className="text-sm font-medium text-slate-900">{u.name}</p>
                       <p className="text-xs text-slate-400">{u.email}</p>
                     </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 border border-slate-200">{u.role}</span>
                   </td>
                   <td className="px-6 py-4">
                     <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${u.plan === "Enterprise" ? "bg-amber-100 text-amber-700" : u.plan === "Pro" ? "bg-purple-100 text-purple-700" : "bg-slate-100 text-slate-600"}`}>{u.plan}</span>

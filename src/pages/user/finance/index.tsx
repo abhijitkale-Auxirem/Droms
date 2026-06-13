@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { mockFinancialGoals, financialChartData } from "@/data/mockData";
 import { getStatusColor, getProgressColor, formatCurrency, cn } from "@/lib/utils";
 import { TrendingUp, Plus, DollarSign, X } from "lucide-react";
@@ -7,13 +7,20 @@ import type { FinancialGoal } from "@/types";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 export default function FinancePage() {
-  const [goals, setGoals] = useState<FinancialGoal[]>(mockFinancialGoals);
+  const [goals, setGoals] = useState<FinancialGoal[]>(() => {
+    const cached = localStorage.getItem("droms_financial_goals");
+    return cached ? JSON.parse(cached) : mockFinancialGoals;
+  });
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({ title: "", type: "savings" as FinancialGoal["type"], targetAmount: "", currentAmount: "", deadline: "" });
 
+  useEffect(() => {
+    localStorage.setItem("droms_financial_goals", JSON.stringify(goals));
+  }, [goals]);
+
   const totalTarget = goals.reduce((a, g) => a + g.targetAmount, 0);
   const totalCurrent = goals.reduce((a, g) => a + g.currentAmount, 0);
-  const overallProgress = Math.round((totalCurrent / totalTarget) * 100);
+  const overallProgress = totalTarget > 0 ? Math.round((totalCurrent / totalTarget) * 100) : 0;
 
   const handleCreate = () => {
     if (!form.title || !form.targetAmount || !form.deadline) { toast.error("Fill required fields"); return; }
@@ -26,6 +33,24 @@ export default function FinancePage() {
     toast.success("Financial goal created! 💰");
     setShowModal(false);
     setForm({ title: "", type: "savings", targetAmount: "", currentAmount: "", deadline: "" });
+  };
+
+  const handleDeposit = (id: string, amount: number) => {
+    setGoals(prev => prev.map(g => {
+      if (g.id === id) {
+        const nextAmt = Math.min(g.targetAmount, g.currentAmount + amount);
+        const nextStatus = nextAmt >= g.targetAmount ? "completed" : g.status;
+        toast.success(`Deposited $${amount} into ${g.title}! 💰`);
+        return { ...g, currentAmount: nextAmt, status: nextStatus };
+      }
+      return g;
+    }));
+  };
+
+  const handleDelete = (id: string) => {
+    const item = goals.find(g => g.id === id);
+    setGoals(prev => prev.filter(g => g.id !== id));
+    toast.success(`Deleted financial goal: ${item?.title}`);
   };
 
   return (
@@ -98,6 +123,7 @@ export default function FinancePage() {
                 <th className="w-44">Progress</th>
                 <th>Deadline</th>
                 <th>Status</th>
+                <th className="text-right">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -121,6 +147,20 @@ export default function FinancePage() {
                     </td>
                     <td className="text-sm text-slate-600">{goal.deadline}</td>
                     <td><span className={`status-badge ${getStatusColor(goal.status)}`}>{goal.status}</span></td>
+                    <td className="text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        {goal.status !== "completed" && (
+                          <button onClick={() => handleDeposit(goal.id, 500)}
+                            className="text-xs px-2.5 py-1.5 rounded-xl font-bold bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors">
+                            +$500
+                          </button>
+                        )}
+                        <button onClick={() => handleDelete(goal.id)}
+                          className="text-xs px-2.5 py-1.5 rounded-xl font-bold bg-red-50 text-red-600 hover:bg-red-100 transition-colors">
+                          Delete
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 );
               })}

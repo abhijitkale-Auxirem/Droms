@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Layout, Plus, Image, Quote, X, Star } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -24,8 +24,16 @@ const defaultBoards = [
 ];
 
 export default function VisionBoardsPage() {
-  const [boards, setBoards] = useState(defaultBoards);
-  const [activeBoard, setActiveBoard] = useState(defaultBoards[0].id);
+  const [boards, setBoards] = useState(() => {
+    const cached = localStorage.getItem("droms_vision_boards_data");
+    return cached ? JSON.parse(cached) : defaultBoards;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("droms_vision_boards_data", JSON.stringify(boards));
+  }, [boards]);
+
+  const [activeBoard, setActiveBoard] = useState(boards[0]?.id || defaultBoards[0].id);
   const [showAddModal, setShowAddModal] = useState(false);
   const [newBoardName, setNewBoardName] = useState("");
 

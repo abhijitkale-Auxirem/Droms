@@ -1,15 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import * as Icons from "lucide-react";
 import {
-  ArrowRight, Sparkles, Target, CheckSquare, Brain, TrendingUp,
-  Heart, Users, Award, Star, ChevronDown, ChevronUp, Play,
-  BarChart2, Zap, Globe, Shield
+  ArrowRight, Sparkles, Star, ChevronDown, ChevronUp, Play,
+  Zap, Globe, Shield, Brain
 } from "lucide-react";
-import { SUCCESS_STATS, TESTIMONIALS, FAQ_ITEMS, PRICING_PLANS } from "@/constants";
+import { SUCCESS_STATS, TESTIMONIALS, FAQ_ITEMS, PRICING_PLANS, FEATURE_DETAILS, FeatureDetail } from "@/constants";
 import heroImg from "@/assets/hero-banner.jpg";
 import aiCoachImg from "@/assets/ai-coach-illustration.jpg";
 import visionBoardImg from "@/assets/vision-board-preview.jpg";
 import { cn } from "@/lib/utils";
+import VideoDemoModal from "@/components/common/VideoDemoModal";
+import FeatureDetailModal from "@/components/common/FeatureDetailModal";
 
 function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
   const [count, setCount] = useState(0);
@@ -36,16 +38,8 @@ function CountUp({ target, suffix = "" }: { target: number; suffix?: string }) {
 
 export default function HomePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [activeFeature, setActiveFeature] = useState(0);
-
-  const features = [
-    { icon: Brain, title: "AI Life Coach", desc: "Personalized guidance powered by advanced AI. Get goal recommendations, motivation, and actionable advice tailored to your unique journey.", color: "from-purple-500 to-indigo-600" },
-    { icon: Target, title: "Smart Goal Planning", desc: "Break down your biggest dreams into achievable milestones with AI-assisted planning, dependency mapping, and progress visualization.", color: "from-blue-500 to-cyan-600" },
-    { icon: CheckSquare, title: "Habit Architecture", desc: "Build powerful daily habits with streak tracking, behavioral analytics, and intelligent reminders that adapt to your patterns.", color: "from-green-500 to-teal-600" },
-    { icon: BarChart2, title: "Vision Board Studio", desc: "Create stunning digital vision boards with drag-and-drop builder, image uploads, affirmations, and goal visualization tools.", color: "from-pink-500 to-rose-600" },
-    { icon: TrendingUp, title: "Financial Planning", desc: "Track savings goals, investments, budgets, and wealth growth with beautiful analytics and AI-powered financial insights.", color: "from-amber-500 to-orange-600" },
-    { icon: Heart, title: "Wellness Center", desc: "Manage fitness goals, nutrition, meditation, and sleep tracking in one integrated wellness ecosystem.", color: "from-red-500 to-pink-600" },
-  ];
+  const [isDemoOpen, setIsDemoOpen] = useState(false);
+  const [selectedFeature, setSelectedFeature] = useState<FeatureDetail | null>(null);
 
   return (
     <div className="overflow-hidden">
@@ -71,11 +65,11 @@ export default function HomePage() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 lg:px-16 pt-24 pb-16 w-full">
           <div className="max-w-4xl mx-auto text-center">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 rounded-full px-5 py-2.5 text-sm text-white/80 mb-8 animate-fade-in-up">
+            <Link to="/register" className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 backdrop-blur border border-white/20 rounded-full px-5 py-2.5 text-sm text-white/80 mb-8 animate-fade-in-up hover:scale-105 transition-all duration-300">
               <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
               <span>156,000+ Dreamers Worldwide</span>
               <span className="text-accent font-semibold">• Join Now</span>
-            </div>
+            </Link>
 
             {/* Headline */}
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-display text-white leading-tight mb-6 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
@@ -98,12 +92,12 @@ export default function HomePage() {
                 Start Free Today
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
-              <button className="flex items-center gap-2.5 text-white/80 hover:text-white font-medium px-6 py-4 rounded-2xl border border-white/20 hover:border-white/40 hover:bg-white/5 transition-all">
+              {/* <button onClick={() => setIsDemoOpen(true)} className="flex items-center gap-2.5 text-white/80 hover:text-white font-medium px-6 py-4 rounded-2xl border border-white/20 hover:border-white/40 hover:bg-white/5 hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
                 <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
                   <Play className="w-3 h-3 ml-0.5" />
                 </div>
                 Watch Demo
-              </button>
+              </button> */}
             </div>
 
             {/* Social Proof */}
@@ -207,13 +201,13 @@ export default function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, i) => {
-              const Icon = feature.icon;
+            {FEATURE_DETAILS.slice(0, 6).map((feature) => {
+              const Icon = (Icons as any)[feature.iconName] || Icons.CircleHelp || Icons.Sparkles;
               return (
                 <div
                   key={feature.title}
                   className="group bg-white rounded-2xl p-6 border border-slate-200 hover:border-primary-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-                  onClick={() => setActiveFeature(i)}
+                  onClick={() => setSelectedFeature(feature)}
                 >
                   <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                     <Icon className="w-6 h-6 text-white" />
@@ -479,6 +473,9 @@ export default function HomePage() {
           <p className="text-slate-500 text-sm mt-6">Free forever • No credit card • Cancel anytime</p>
         </div>
       </section>
+
+      <VideoDemoModal isOpen={isDemoOpen} onClose={() => setIsDemoOpen(false)} />
+      <FeatureDetailModal isOpen={!!selectedFeature} onClose={() => setSelectedFeature(null)} feature={selectedFeature} />
     </div>
   );
 }

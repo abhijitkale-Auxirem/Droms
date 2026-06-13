@@ -4,6 +4,7 @@ export interface User {
   email: string;
   avatar?: string;
   plan: "free" | "pro" | "enterprise";
+  role: "individual" | "student" | "professional" | "entrepreneur" | "coach" | "leader" | "admin";
   joinedAt: string;
   successScore: number;
   streakDays: number;

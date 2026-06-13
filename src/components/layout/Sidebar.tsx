@@ -40,6 +40,10 @@ const sidebarItems = [
   { id: "settings", label: "Settings", path: "/dashboard/settings", icon: "Settings" },
 ];
 
+const getAllowedSidebarItems = (role?: string) => {
+  return sidebarItems;
+};
+
 interface SidebarProps {
   mobileOpen: boolean;
   onMobileClose: () => void;
@@ -51,7 +55,8 @@ export default function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
   const location = useLocation();
   const { user, logout } = useAuthStore();
 
-  const filteredItems = sidebarItems.filter(item =>
+  const allowedItems = getAllowedSidebarItems(user?.role);
+  const filteredItems = allowedItems.filter(item =>
     item.label.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -162,13 +167,15 @@ export default function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
           })}
 
           {/* Admin Link */}
-          {!collapsed && (
+          {!collapsed && (user?.role === "admin" || user?.role === "coach" || user?.role === "leader") && (
             <div className="pt-2 mt-2 border-t border-white/10">
               <Link to="/admin"
                 className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-all duration-200 group">
                 <Shield className="w-4 h-4 text-slate-500 group-hover:text-red-400" />
-                <span className="text-sm font-medium flex-1">Admin Panel</span>
-                <span className="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full font-medium">Admin</span>
+                <span className="text-sm font-medium flex-1">
+                  {user.role === "admin" ? "Admin Panel" : user.role === "coach" ? "Coach Panel" : "Leader Panel"}
+                </span>
+                <span className="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full font-medium capitalize">{user.role}</span>
               </Link>
             </div>
           )}

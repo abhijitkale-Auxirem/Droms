@@ -1,16 +1,24 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Mail, Lock, User, Eye, EyeOff, Sparkles, ArrowRight } from "lucide-react";
 import { login } from "@/lib/auth";
 import { useAuthStore } from "@/store/authStore";
 import { toast } from "sonner";
 
 export default function RegisterPage() {
-  const [form, setForm] = useState({ name: "", email: "", password: "", agree: false });
+  const [searchParams] = useSearchParams();
+  const emailParam = searchParams.get("email") || "";
+  const [form, setForm] = useState({ name: "", email: emailParam, password: "", role: "individual", agree: false });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { login: storeLogin } = useAuthStore();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (emailParam) {
+      setForm(prev => ({ ...prev, email: emailParam }));
+    }
+  }, [emailParam]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,7 +27,7 @@ export default function RegisterPage() {
     await new Promise(r => setTimeout(r, 1000));
     const result = login(form.email, form.password);
     if (result.success && result.user) {
-      const user = { ...result.user, name: form.name };
+      const user = { ...result.user, name: form.name, role: form.role as any };
       storeLogin(user);
       toast.success("Account created! Welcome to Droms 🚀");
       navigate("/dashboard", { replace: true });
@@ -62,6 +70,21 @@ export default function RegisterPage() {
                 className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 text-sm"
                 placeholder="you@example.com" />
             </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1.5">User Type / Goal Focus</label>
+            <select 
+              value={form.role} 
+              onChange={e => setForm({...form, role: e.target.value})}
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 text-sm bg-white text-slate-800"
+            >
+              <option value="individual">Individual User</option>
+              <option value="student">Student</option>
+              <option value="professional">Professional</option>
+              <option value="entrepreneur">Entrepreneur</option>
+              <option value="coach">Coach / Mentor</option>
+              <option value="leader">Community Leader</option>
+            </select>
           </div>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
