@@ -3,14 +3,14 @@ import { Users, MessageSquare, Trophy, Heart, ArrowRight, Globe } from "lucide-r
 
 export default function CommunityPage() {
   const groups = [
-    { name: "Startup Founders", members: 2340, category: "Business", activity: "Very Active", emoji: "🚀" },
-    { name: "Financial Independence", members: 8920, category: "Finance", activity: "Very Active", emoji: "💰" },
-    { name: "Marathon Runners", members: 1560, category: "Fitness", activity: "Active", emoji: "🏃" },
-    { name: "Morning Ritual Masters", members: 4450, category: "Habits", activity: "Active", emoji: "🌅" },
-    { name: "Writers Circle", members: 1780, category: "Creativity", activity: "Active", emoji: "✍️" },
-    { name: "Tech Career Growth", members: 5670, category: "Career", activity: "Very Active", emoji: "💻" },
-    { name: "Mindfulness Practice", members: 3210, category: "Wellness", activity: "Active", emoji: "🧘" },
-    { name: "Young Entrepreneurs", members: 6890, category: "Business", activity: "Very Active", emoji: "⚡" },
+    { name: "Startup Founders", members: 2340, category: "Business", activity: "Very Active", emoji: "" },
+    { name: "Financial Independence", members: 8920, category: "Finance", activity: "Very Active", emoji: "" },
+    { name: "Marathon Runners", members: 1560, category: "Fitness", activity: "Active", emoji: "" },
+    { name: "Morning Ritual Masters", members: 4450, category: "Habits", activity: "Active", emoji: "" },
+    { name: "Writers Circle", members: 1780, category: "Creativity", activity: "Active", emoji: "" },
+    { name: "Tech Career Growth", members: 5670, category: "Career", activity: "Very Active", emoji: "" },
+    { name: "Mindfulness Practice", members: 3210, category: "Wellness", activity: "Active", emoji: "" },
+    { name: "Young Entrepreneurs", members: 6890, category: "Business", activity: "Very Active", emoji: "" },
   ];
 
   return (

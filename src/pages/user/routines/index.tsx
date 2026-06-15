@@ -20,7 +20,7 @@ interface RoutineGroup {
 
 const defaultRoutines: Record<string, RoutineGroup> = {
   morning: {
-    title: "Morning Routine", emoji: "🌅", completionRate: 90,
+    title: "Morning Routine", emoji: "", completionRate: 90,
     tasks: [
       { id: "mr1", time: "5:30 AM", title: "Wake Up & Hydrate", duration: 5, completed: true },
       { id: "mr2", time: "5:35 AM", title: "Morning Stretch / Yoga", duration: 15, completed: true },
@@ -32,7 +32,7 @@ const defaultRoutines: Record<string, RoutineGroup> = {
     ],
   },
   work: {
-    title: "Work Routine", emoji: "💻", completionRate: 75,
+    title: "Work Routine", emoji: "", completionRate: 75,
     tasks: [
       { id: "wr1", time: "8:00 AM", title: "Deep Work Block #1", duration: 90, completed: true },
       { id: "wr2", time: "9:30 AM", title: "Email & Communications", duration: 30, completed: true },
@@ -44,7 +44,7 @@ const defaultRoutines: Record<string, RoutineGroup> = {
     ],
   },
   fitness: {
-    title: "Fitness Routine", emoji: "🏋️", completionRate: 85,
+    title: "Fitness Routine", emoji: "", completionRate: 85,
     tasks: [
       { id: "fr1", time: "6:00 AM", title: "Pre-workout Meal", duration: 10, completed: true },
       { id: "fr2", time: "6:30 AM", title: "Warmup & Dynamic Stretching", duration: 10, completed: true },
@@ -55,7 +55,7 @@ const defaultRoutines: Record<string, RoutineGroup> = {
     ],
   },
   night: {
-    title: "Night Routine", emoji: "🌙", completionRate: 70,
+    title: "Night Routine", emoji: "", completionRate: 70,
     tasks: [
       { id: "nr1", time: "9:00 PM", title: "No More Screens", duration: 0, completed: false },
       { id: "nr2", time: "9:00 PM", title: "Reading (30 min)", duration: 30, completed: false },
