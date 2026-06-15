@@ -184,9 +184,9 @@ export function AdminTestimonialsPage() {
     columns={["User", "Role", "Achievement", "Rating", "Status"]}
     rows={[
       { user: "Sarah Chen", role: "Product Manager", achievement: "Got promoted + launched startup", rating: "⭐⭐⭐⭐⭐", status: <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Approved</span> },
-      { user: "Marcus Johnson", role: "Entrepreneur", achievement: "3x revenue growth in 12 months", rating: "⭐⭐⭐⭐⭐", status: <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Approved</span> },
+      { user: "Marcus Johnson", role: "Entrepreneur", achievement: "3x revenue growth in 12 months", rating: "⭐⭐⭐⭐", status: <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Approved</span> },
       { user: "Priya Sharma", role: "Medical Professional", achievement: "Marathon + 30lbs lost + book written", rating: "⭐⭐⭐⭐⭐", status: <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Approved</span> },
-      { user: "James Liu", role: "Financial Analyst", achievement: "3x portfolio growth in 18 months", rating: "⭐⭐⭐⭐⭐", status: <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">Pending</span> },
+      { user: "James Liu", role: "Financial Analyst", achievement: "3x portfolio growth in 18 months", rating: "⭐⭐⭐⭐", status: <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">Pending</span> },
     ]}
   />;
 }

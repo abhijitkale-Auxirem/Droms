@@ -340,7 +340,7 @@ export default function HomePage() {
                 </div>
                 <p className="text-slate-600 text-sm leading-relaxed mb-4 italic">"{t.quote}"</p>
                 <div className="bg-primary-50 rounded-xl p-2.5 mb-4">
-                  <p className="text-xs font-semibold text-primary-700">🏆 {t.achievement}</p>
+                  <p className="text-xs font-semibold text-primary-700"> {t.achievement}</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <img src={t.avatar} alt={t.name} className="w-10 h-10 rounded-full" />
