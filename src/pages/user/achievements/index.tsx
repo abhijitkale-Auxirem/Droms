@@ -3,10 +3,10 @@ import { Award, Star, Zap, Trophy } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 
 const locked = [
-  { title: "Dream Crusher", description: "Complete 20 goals", icon: "🎯", points: 500, category: "Goals" },
-  { title: "Wealth Builder", description: "Reach $100K net worth", icon: "💎", points: 1000, category: "Finance" },
-  { title: "100-Day Champion", description: "Maintain 100-day streak", icon: "🏆", points: 1500, category: "Habits" },
-  { title: "Community Leader", description: "Lead an accountability group", icon: "👑", points: 750, category: "Community" },
+  { title: "Dream Crusher", description: "Complete 20 goals", icon: "", points: 500, category: "Goals" },
+  { title: "Wealth Builder", description: "Reach $100K net worth", icon: "", points: 1000, category: "Finance" },
+  { title: "100-Day Champion", description: "Maintain 100-day streak", icon: "", points: 1500, category: "Habits" },
+  { title: "Community Leader", description: "Lead an accountability group", icon: "", points: 750, category: "Community" },
 ];
 
 export default function AchievementsPage() {

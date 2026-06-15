@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, ChevronDown, Sparkles } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
@@ -34,13 +34,36 @@ export default function PublicHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const timeoutRef = useRef<number | null>(null);
   const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
+
+  const handleMouseEnter = (label: string) => {
+    if (timeoutRef.current) {
+      window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    setActiveDropdown(label);
+  };
+
+  const handleMouseLeave = () => {
+    if (timeoutRef.current) {
+      window.clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = window.setTimeout(() => {
+      setActiveDropdown(null);
+    }, 200);
+  };
 
   useEffect(() => {
     const handler = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handler);
-    return () => window.removeEventListener("scroll", handler);
+    return () => {
+      window.removeEventListener("scroll", handler);
+      if (timeoutRef.current) {
+        window.clearTimeout(timeoutRef.current);
+      }
+    };
   }, []);
 
   return (
@@ -63,15 +86,16 @@ export default function PublicHeader() {
             {navItems.map((item) => (
               <div
                 key={item.label}
-                className="relative"
-                onMouseEnter={() => item.dropdown && setActiveDropdown(item.label)}
-                onMouseLeave={() => setActiveDropdown(null)}
+                className="relative text-white"
+                onMouseEnter={() => item.dropdown && handleMouseEnter(item.label)}
+                onMouseLeave={handleMouseLeave}
               >
                 <Link
                   to={item.href}
+                  onClick={() => setActiveDropdown(null)}
                   className={cn(
                     "flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200",
-                    isScrolled ? "text-slate-700 hover:text-primary-600 hover:bg-primary-50" : "text-slate-700 hover:text-primary-600 hover:bg-white/70"
+                    isScrolled ? "text-white hover:text-primary-600 hover:bg-primary-50" : "text-slate-700 hover:text-primary-600 hover:bg-white/70"
                   )}
                 >
                   {item.label}
@@ -80,17 +104,20 @@ export default function PublicHeader() {
 
                 {/* Dropdown */}
                 {item.dropdown && activeDropdown === item.label && (
-                  <div className="absolute top-full left-0 mt-1 w-64 bg-white rounded-2xl shadow-xl border border-slate-100 p-2 animate-fade-in-up">
-                    {item.dropdown.map((sub) => (
-                      <Link
-                        key={sub.label}
-                        to={sub.href}
-                        className="flex flex-col px-3 py-2.5 rounded-xl hover:bg-primary-50 transition-colors group"
-                      >
-                        <span className="text-sm font-medium text-slate-800 group-hover:text-primary-600">{sub.label}</span>
-                        <span className="text-xs text-slate-500 mt-0.5">{sub.desc}</span>
-                      </Link>
-                    ))}
+                  <div className="absolute top-full left-0 pt-2 w-64 z-50">
+                    <div className="bg-white rounded-2xl shadow-xl border border-slate-100 p-2 animate-fade-in-up">
+                      {item.dropdown.map((sub) => (
+                        <Link
+                          key={sub.label}
+                          to={sub.href}
+                          onClick={() => setActiveDropdown(null)}
+                          className="flex flex-col px-3 py-2.5 rounded-xl hover:bg-primary-50 transition-colors group"
+                        >
+                          <span className="text-sm font-medium text-slate-800 group-hover:text-primary-600">{sub.label}</span>
+                          <span className="text-xs text-slate-500 mt-0.5">{sub.desc}</span>
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>

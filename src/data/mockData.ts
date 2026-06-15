@@ -64,14 +64,14 @@ export const mockAchievements: Achievement[] = [
   { id: "a6", title: "Financial Pioneer", description: "Set up all financial goals", icon: "", earnedAt: "2024-02-28", category: "Finance", points: 180 },
   { id: "a7", title: "Community Builder", description: "Joined 3 accountability groups", icon: "", earnedAt: "2024-03-05", category: "Community", points: 120 },
   { id: "a8", title: "Vision Visionary", description: "Created your first vision board", icon: "", earnedAt: "2024-01-25", category: "Vision", points: 90 },
-  { id: "a9", title: "50-Day Streak Legend", description: "Maintained habits for 50 days straight", icon: "⚡", earnedAt: "2024-03-15", category: "Habits", points: 500 },
+  { id: "a9", title: "50-Day Streak Legend", description: "Maintained habits for 50 days straight", icon: "", earnedAt: "2024-03-15", category: "Habits", points: 500 },
 ];
 
 export const mockNotifications: Notification[] = [
   { id: "n1", title: "Goal Milestone Reached!", message: "You've completed 80% of 'Complete MVP Development'. Keep going!", type: "goal", read: false, createdAt: "2025-01-15T08:30:00Z" },
   { id: "n2", title: "Daily Habit Reminder", message: "Don't forget your morning meditation. Your 42-day streak is at stake!", type: "habit", read: false, createdAt: "2025-01-15T07:00:00Z" },
   { id: "n3", title: "AI Coach Insight", message: "Based on your patterns, you're most productive between 8-11am. Schedule deep work now!", type: "ai", read: false, createdAt: "2025-01-15T09:00:00Z" },
-  { id: "n4", title: "New Achievement Unlocked!", message: "🔥 Habit Hero - You've maintained a 42-day streak! Incredible dedication.", type: "achievement", read: false, createdAt: "2025-01-14T20:00:00Z" },
+  { id: "n4", title: "New Achievement Unlocked!", message: " Habit Hero - You've maintained a 42-day streak! Incredible dedication.", type: "achievement", read: false, createdAt: "2025-01-14T20:00:00Z" },
   { id: "n5", title: "Community Update", message: "Your accountability group 'Startup Founders' has a new challenge posted!", type: "community", read: false, createdAt: "2025-01-14T15:30:00Z" },
   { id: "n6", title: "Financial Goal Update", message: "You're 72% toward your Emergency Fund goal. On track for June completion!", type: "goal", read: true, createdAt: "2025-01-14T10:00:00Z" },
   { id: "n7", title: "Weekly Report Ready", message: "Your weekly success report is ready. You achieved 87% of your weekly targets!", type: "ai", read: true, createdAt: "2025-01-13T18:00:00Z" },

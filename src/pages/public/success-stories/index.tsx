@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Star, ArrowRight } from "lucide-react";
+import { Star, ArrowRight ,Trophy} from "lucide-react";
 import { TESTIMONIALS } from "@/constants";
 
 const extendedStories = [
@@ -32,7 +32,7 @@ export default function SuccessStoriesPage() {
                 </div>
                 <p className="text-slate-600 leading-relaxed mb-6 italic">"{story.quote}"</p>
                 <div className="bg-gradient-to-r from-primary-50 to-blue-50 rounded-xl p-3 mb-6 border border-primary-100">
-                  <p className="text-sm font-bold text-primary-700">🏆 {story.achievement}</p>
+                  <p className="text-sm font-bold text-primary-700"><Trophy></Trophy> { story.achievement}</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <img src={story.avatar} alt={story.name} className="w-12 h-12 rounded-full ring-2 ring-primary-100" />

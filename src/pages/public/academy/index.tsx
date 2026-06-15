@@ -3,12 +3,12 @@ import { GraduationCap, ArrowRight, BookOpen, Award, Play, Users, Star, Clock } 
 import { useAuthStore } from "@/store/authStore";
 
 const categories = [
-  { name: "Leadership & Management", courses: 24, icon: "👑", color: "bg-purple-50 border-purple-200" },
-  { name: "Financial Intelligence", courses: 18, icon: "💰", color: "bg-green-50 border-green-200" },
-  { name: "Productivity Systems", courses: 31, icon: "⚡", color: "bg-yellow-50 border-yellow-200" },
-  { name: "Mindset & Psychology", courses: 22, icon: "🧠", color: "bg-blue-50 border-blue-200" },
-  { name: "Health & Wellness", courses: 16, icon: "💪", color: "bg-red-50 border-red-200" },
-  { name: "Entrepreneurship", courses: 28, icon: "🚀", color: "bg-orange-50 border-orange-200" },
+  { name: "Leadership & Management", courses: 24, icon: "", color: "bg-purple-50 border-purple-200" },
+  { name: "Financial Intelligence", courses: 18, icon: "", color: "bg-green-50 border-green-200" },
+  { name: "Productivity Systems", courses: 31, icon: "", color: "bg-yellow-50 border-yellow-200" },
+  { name: "Mindset & Psychology", courses: 22, icon: "", color: "bg-blue-50 border-blue-200" },
+  { name: "Health & Wellness", courses: 16, icon: "", color: "bg-red-50 border-red-200" },
+  { name: "Entrepreneurship", courses: 28, icon: "", color: "bg-orange-50 border-orange-200" },
 ];
 
 const featuredCourses = [
