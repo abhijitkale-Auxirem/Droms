@@ -199,17 +199,7 @@ export default function AICoachPage() {
           </div>
         </div>
 
-        <div className="bg-gradient-dark rounded-2xl p-5 text-white">
-          <h3 className="font-semibold mb-3">Today's Focus</h3>
-          <div className="space-y-2">
-            {["Complete MVP feature set", "Reach out to 3 investors", "20 min meditation", "Journal entry"].map((task, i) => (
-              <div key={i} className="flex items-center gap-2 text-sm text-slate-300">
-                <div className="w-4 h-4 rounded-full border border-slate-500 flex-shrink-0" />
-                {task}
-              </div>
-            ))}
-          </div>
-        </div>
+     
 
         <div className="bg-white rounded-2xl border border-slate-200 p-5">
           <h3 className="font-semibold text-slate-900 mb-3">Quick Suggestions</h3>

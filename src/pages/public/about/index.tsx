@@ -3,7 +3,7 @@ import { ArrowRight, Heart, Target, Users, Award } from "lucide-react";
 
 export default function AboutPage() {
   return (
-    <div className="pt-20">
+    <div className="overflow-hidden">
       <section className="py-24 bg-gradient-dark relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-600/15 rounded-full blur-3xl" />

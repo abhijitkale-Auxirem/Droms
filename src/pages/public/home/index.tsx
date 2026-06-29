@@ -92,12 +92,12 @@ export default function HomePage() {
                 Start Free Today
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
-              {/* <button onClick={() => setIsDemoOpen(true)} className="flex items-center gap-2.5 text-white/80 hover:text-white font-medium px-6 py-4 rounded-2xl border border-white/20 hover:border-white/40 hover:bg-white/5 hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
+              <button onClick={() => setIsDemoOpen(true)} className="flex items-center gap-2.5 text-white/80 hover:text-white font-medium px-6 py-4 rounded-2xl border border-white/20 hover:border-white/40 hover:bg-white/5 hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
                 <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
                   <Play className="w-3 h-3 ml-0.5" />
                 </div>
                 Watch Demo
-              </button> */}
+              </button>
             </div>
 
             {/* Social Proof */}

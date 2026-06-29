@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Bell, Search, Menu, Plus, Sparkles, ChevronDown, LogOut, User, Settings } from "lucide-react";
+import { Bell, Search, Menu, Plus, Sparkles, ChevronDown, LogOut, User, Settings, Globe } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 import { mockNotifications } from "@/data/mockData";
 import { cn } from "@/lib/utils";
@@ -39,11 +39,15 @@ export default function DashboardHeader({ onMenuToggle }: DashboardHeaderProps) 
 
       {/* Right Actions */}
       <div className="flex items-center gap-2 ml-auto">
-        {/* Quick Add */}
-        {/* <button className="hidden md:flex items-center gap-2 bg-gradient-purple text-white text-sm font-medium px-3 py-2 rounded-xl hover:shadow-glow-purple transition-all">
-          <Plus className="w-4 h-4" />
-          <span>Quick Add</span>
-        </button> */}
+        
+        {/* Visit Website */}
+        <Link
+          to="/"
+          className="hidden md:flex items-center gap-1.5 bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium px-3 py-2 rounded-xl hover:bg-slate-100 transition-colors"
+        >
+          <Globe className="w-3.5 h-3.5 text-slate-500" />
+          <span>Visit Website</span>
+        </Link>
 
         {/* AI Chip */}
         <button

@@ -16,7 +16,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="pt-20">
+    <div className="overflow-hidden">
       <section className="py-24 bg-gradient-dark relative overflow-hidden">
         <div className="relative max-w-4xl mx-auto px-4 text-center">
           <h1 className="text-5xl font-bold font-display text-white mb-4">

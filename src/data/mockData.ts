@@ -12,7 +12,6 @@ export const mockDreams: Dream[] = [
 ];
 
 export const mockGoals: Goal[] = [
-  { id: "g1", title: "Complete MVP Development", category: "Career", milestone: "Technical Build", progress: 80, deadline: "2025-03-31", status: "on-track", dreamId: "d1", priority: "high" },
   { id: "g2", title: "Raise $100k Seed Funding", category: "Financial", milestone: "Funding Round", progress: 35, deadline: "2025-06-30", status: "at-risk", dreamId: "d1", priority: "high" },
   { id: "g3", title: "Save $50,000 Emergency Fund", category: "Financial", milestone: "Q2 2025", progress: 72, deadline: "2025-06-01", status: "on-track", dreamId: "d2", priority: "high" },
   { id: "g4", title: "Run 50 Miles/Month", category: "Health", milestone: "Monthly Target", progress: 88, deadline: "2025-02-28", status: "on-track", dreamId: "d3", priority: "medium" },
@@ -68,7 +67,6 @@ export const mockAchievements: Achievement[] = [
 ];
 
 export const mockNotifications: Notification[] = [
-  { id: "n1", title: "Goal Milestone Reached!", message: "You've completed 80% of 'Complete MVP Development'. Keep going!", type: "goal", read: false, createdAt: "2025-01-15T08:30:00Z" },
   { id: "n2", title: "Daily Habit Reminder", message: "Don't forget your morning meditation. Your 42-day streak is at stake!", type: "habit", read: false, createdAt: "2025-01-15T07:00:00Z" },
   { id: "n3", title: "AI Coach Insight", message: "Based on your patterns, you're most productive between 8-11am. Schedule deep work now!", type: "ai", read: false, createdAt: "2025-01-15T09:00:00Z" },
   { id: "n4", title: "New Achievement Unlocked!", message: " Habit Hero - You've maintained a 42-day streak! Incredible dedication.", type: "achievement", read: false, createdAt: "2025-01-14T20:00:00Z" },

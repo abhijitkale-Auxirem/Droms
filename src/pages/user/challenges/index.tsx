@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Trophy, Users, Clock, Plus, Target, CheckCircle, Award, PlusCircle, Lock, Unlock } from "lucide-react";
+import { Trophy, Users, Clock, Plus, Target, CheckCircle, Award, PlusCircle, Lock, Unlock, X } from "lucide-react";
 import { challenges } from "@/data/mockData";
 import { toast } from "sonner";
 
@@ -17,27 +17,33 @@ export default function ChallengesPage() {
   });
   const [filter, setFilter] = useState("all");
 
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
+  const [newCategory, setNewCategory] = useState("Productivity");
+  const [newPrize, setNewPrize] = useState("");
+  const [newDaysLeft, setNewDaysLeft] = useState(30);
+
   useEffect(() => {
     localStorage.setItem("droms_challenges_data", JSON.stringify(list));
   }, [list]);
 
   const handleJoin = (id: string) => {
-    setList(prev => 
-      prev.map(c => 
-        c.id === id 
-          ? { ...c, joined: true, participants: c.participants + 1, progress: 0 } 
+    setList(prev =>
+      prev.map(c =>
+        c.id === id
+          ? { ...c, joined: true, participants: c.participants + 1, progress: 0 }
           : c
       )
     );
     const item = list.find(c => c.id === id);
-    toast.success(`Successfully joined challenge: ${item?.title}! 🚀`);
+    toast.success(`Successfully joined challenge: ${item?.title}! `);
   };
 
   const handleLeave = (id: string) => {
-    setList(prev => 
-      prev.map(c => 
-        c.id === id 
-          ? { ...c, joined: false, participants: Math.max(0, c.participants - 1), progress: 0 } 
+    setList(prev =>
+      prev.map(c =>
+        c.id === id
+          ? { ...c, joined: false, participants: Math.max(0, c.participants - 1), progress: 0 }
           : c
       )
     );
@@ -46,12 +52,12 @@ export default function ChallengesPage() {
   };
 
   const handleProgressIncrement = (id: string) => {
-    setList(prev => 
+    setList(prev =>
       prev.map(c => {
         if (c.id === id) {
           const nextProgress = Math.min(100, c.progress + 10);
           if (nextProgress === 100 && c.progress < 100) {
-            toast.success(`Congratulations! You completed the challenge: ${c.title}! 🏆`);
+            toast.success(`Congratulations! You completed the challenge: ${c.title}! `);
           } else {
             toast.success(`Progress updated for: ${c.title} (+10%)`);
           }
@@ -63,26 +69,42 @@ export default function ChallengesPage() {
   };
 
   const handleCreateChallenge = () => {
-    const title = window.prompt("Enter Challenge Title:");
-    if (!title) return;
-    const category = window.prompt("Enter Category (e.g. Wellness, Fitness, Productivity, Finance, Learning):", "Productivity");
-    if (!category) return;
-    const prize = window.prompt("Enter Reward / Badge:", "Productivity Badge + 200 pts");
-    if (!prize) return;
+    setNewTitle("");
+    setNewCategory("Productivity");
+    setNewPrize("Productivity Badge + 200 pts");
+    setNewDaysLeft(30);
+    setShowCreateModal(true);
+  };
+
+  const handleCreateChallengeSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newTitle.trim()) {
+      toast.error("Please enter a challenge title");
+      return;
+    }
+    if (!newCategory.trim()) {
+      toast.error("Please select or enter a category");
+      return;
+    }
+    if (!newPrize.trim()) {
+      toast.error("Please enter a prize/reward");
+      return;
+    }
 
     const newChallenge = {
       id: `ch-${Date.now()}`,
-      title,
-      category,
+      title: newTitle.trim(),
+      category: newCategory.trim(),
       participants: 1,
-      daysLeft: 30,
+      daysLeft: Number(newDaysLeft) || 30,
       progress: 0,
       joined: true,
-      prize
+      prize: newPrize.trim()
     };
 
     setList(prev => [newChallenge, ...prev]);
-    toast.success(`Challenge "${title}" created and joined! 🏆`);
+    setShowCreateModal(false);
+    toast.success(`Challenge "${newTitle}" created and joined! `);
   };
 
   const myJoined = list.filter(c => c.joined);
@@ -186,7 +208,7 @@ export default function ChallengesPage() {
                   </td>
                   <td className="px-6 py-4">
                     {!c.joined ? (
-                      <button 
+                      <button
                         onClick={() => handleJoin(c.id)}
                         className="text-xs font-semibold text-primary-600 bg-primary-50 hover:bg-primary-100 px-3.5 py-2 rounded-xl transition-all"
                       >
@@ -194,14 +216,14 @@ export default function ChallengesPage() {
                       </button>
                     ) : (
                       <div className="flex items-center gap-2">
-                        <button 
+                        <button
                           onClick={() => handleProgressIncrement(c.id)}
                           className="text-xs font-semibold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1.5 rounded-xl transition-all"
                           title="Complete daily target (+10%)"
                         >
                           +10%
                         </button>
-                        <button 
+                        <button
                           onClick={() => handleLeave(c.id)}
                           className="text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 px-2.5 py-1.5 rounded-xl transition-all"
                         >
@@ -216,6 +238,106 @@ export default function ChallengesPage() {
           </table>
         </div>
       </div>
+
+      {/* Create Challenge Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-200">
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+              <div className="flex items-center gap-2">
+                <Trophy className="w-5 h-5 text-primary-600" />
+                <h3 className="font-bold text-lg text-slate-900">Create New Challenge</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowCreateModal(false)}
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-all"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleCreateChallengeSubmit}>
+              <div className="p-6 space-y-4 text-left">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Challenge Title</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Read 4 Books in 30 Days"
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    className="w-full px-4 py-2.5 text-sm rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-primary-400 focus:bg-white transition-all text-slate-900 animate-none"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Category</label>
+                    <div className="relative">
+                      <select
+                        value={newCategory}
+                        onChange={(e) => setNewCategory(e.target.value)}
+                        className="w-full px-4 py-2.5 text-sm rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-primary-400 focus:bg-white transition-all text-slate-900 cursor-pointer"
+                      >
+                        <option value="Productivity">Productivity</option>
+                        <option value="Wellness">Wellness</option>
+                        <option value="Fitness">Fitness</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Learning">Learning</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Duration (Days)</label>
+                    <input
+                      type="number"
+                      required
+                      min={1}
+                      max={365}
+                      value={newDaysLeft}
+                      onChange={(e) => setNewDaysLeft(Number(e.target.value))}
+                      className="w-full px-4 py-2.5 text-sm rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-primary-400 focus:bg-white transition-all text-slate-900"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Reward / Prize</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Productivity Legend Badge"
+                    value={newPrize}
+                    onChange={(e) => setNewPrize(e.target.value)}
+                    className="w-full px-4 py-2.5 text-sm rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-primary-400 focus:bg-white transition-all text-slate-900"
+                  />
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="px-6 py-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateModal(false)}
+                  className="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:text-slate-800 hover:bg-slate-100 transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-primary-600 hover:bg-primary-700 text-white font-semibold px-5 py-2.5 rounded-xl text-sm transition-all hover:shadow-glow-purple flex items-center gap-2"
+                >
+                  <Plus className="w-4 h-4" /> Create Challenge
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

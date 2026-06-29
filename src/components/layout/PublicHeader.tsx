@@ -67,10 +67,7 @@ export default function PublicHeader() {
   }, []);
 
   return (
-    <header className={cn(
-      "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-      isScrolled ? "nav-blur shadow-sm" : "bg-transparent"
-    )}>
+    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 nav-blur shadow-sm">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
@@ -93,10 +90,7 @@ export default function PublicHeader() {
                 <Link
                   to={item.href}
                   onClick={() => setActiveDropdown(null)}
-                  className={cn(
-                    "flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200",
-                    isScrolled ? "text-white hover:text-primary-600 hover:bg-primary-50" : "text-slate-700 hover:text-primary-600 hover:bg-white/70"
-                  )}
+                  className="flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-slate-700 hover:text-primary-600 hover:bg-primary-50"
                 >
                   {item.label}
                   {item.dropdown && <ChevronDown className="w-3.5 h-3.5 opacity-60" />}
@@ -132,10 +126,7 @@ export default function PublicHeader() {
               </button>
             ) : (
               <>
-                <Link to="/login" className={cn(
-                  "text-sm font-medium px-4 py-2.5 rounded-xl transition-all duration-200",
-                  isScrolled ? "text-slate-700 hover:text-primary-600" : "text-slate-700 hover:text-primary-600"
-                )}>
+                <Link to="/login" className="text-sm font-medium px-4 py-2.5 rounded-xl transition-all duration-200 text-slate-700 hover:text-primary-600">
                   Login
                 </Link>
                 <Link to="/register" className="btn-primary text-sm py-2.5">
@@ -147,7 +138,7 @@ export default function PublicHeader() {
 
           {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors"
+            className="md:hidden p-2 rounded-lg transition-colors text-slate-700 hover:bg-slate-100"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

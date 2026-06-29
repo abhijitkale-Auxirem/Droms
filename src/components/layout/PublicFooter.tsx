@@ -16,19 +16,18 @@ const footerLinks = {
     { label: "Goal Planning", href: "/goal-planning" },
     { label: "Vision Board", href: "/vision-board" },
     { label: "Pricing", href: "/pricing" },
+ 
   ],
   Resources: [
     { label: "Learning Academy", href: "/academy" },
     { label: "Success Stories", href: "/success-stories" },
     { label: "Community", href: "/community" },
     { label: "Help Center", href: "/help" },
-    { label: "API Docs", href: "/docs" },
   ],
   Legal: [
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "/terms" },
     { label: "Cookie Policy", href: "/cookies" },
-    { label: "Security", href: "/security" },
   ],
 };
 
@@ -69,13 +68,13 @@ export default function PublicFooter() {
           </h3>
           <p className="text-white/80 mb-6 relative">Join 156,000+ achievers transforming their dreams into reality</p>
           <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto relative">
-            {/* <input
+            <input
               type="email"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="flex-1 px-4 py-3 rounded-xl bg-white/20 backdrop-blur border border-white/30 text-white placeholder:text-white/60 focus:outline-none focus:border-white/60"
-            /> */}
+            />
             <button type="submit" className="bg-accent hover:bg-yellow-500 text-droms-dark font-bold px-6 py-3 rounded-xl transition-colors whitespace-nowrap">
               Get Started Free
             </button>

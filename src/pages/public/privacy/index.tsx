@@ -3,7 +3,7 @@ import { Shield, Lock, Eye, CheckCircle } from "lucide-react";
 
 export default function PrivacyPage() {
   return (
-    <div className="pt-20">
+    <div className="overflow-hidden">
       <section className="py-16 bg-gradient-dark">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm text-white/80 mb-6">

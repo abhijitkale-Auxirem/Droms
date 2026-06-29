@@ -20,7 +20,7 @@ export default function DreamsPage() {
   const [filterStatus, setFilterStatus] = useState("all");
   const [showModal, setShowModal] = useState(false);
   const [editDream, setEditDream] = useState<Dream | null>(null);
-  const [form, setForm] = useState({ title: "", category: "", priority: "medium" as Dream["priority"], targetDate: "", description: "" });
+  const [form, setForm] = useState({ title: "", category: "", priority: "medium" as Dream["priority"], status: "active" as Dream["status"], progress: 0, targetDate: "", description: "" });
 
   const filtered = dreams.filter(d => {
     const matchSearch = d.title.toLowerCase().includes(search.toLowerCase()) || d.category.toLowerCase().includes(search.toLowerCase());
@@ -30,13 +30,13 @@ export default function DreamsPage() {
 
   const openCreate = () => {
     setEditDream(null);
-    setForm({ title: "", category: DREAM_CATEGORIES[0], priority: "medium", targetDate: "", description: "" });
+    setForm({ title: "", category: DREAM_CATEGORIES[0], priority: "medium", status: "active", progress: 0, targetDate: "", description: "" });
     setShowModal(true);
   };
 
   const openEdit = (dream: Dream) => {
     setEditDream(dream);
-    setForm({ title: dream.title, category: dream.category, priority: dream.priority, targetDate: dream.targetDate, description: dream.description || "" });
+    setForm({ title: dream.title, category: dream.category, priority: dream.priority, status: dream.status, progress: dream.progress, targetDate: dream.targetDate, description: dream.description || "" });
     setShowModal(true);
   };
 
@@ -46,7 +46,7 @@ export default function DreamsPage() {
       setDreams(prev => prev.map(d => d.id === editDream.id ? { ...d, ...form } : d));
       toast.success("Dream updated!");
     } else {
-      const newDream: Dream = { id: `d${Date.now()}`, ...form, progress: 0, status: "active" };
+      const newDream: Dream = { id: `d${Date.now()}`, ...form };
       setDreams(prev => [newDream, ...prev]);
       toast.success("Dream created! Start planning your journey 🌟");
     }
@@ -192,11 +192,40 @@ export default function DreamsPage() {
                   </select>
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">Target Date *</label>
-                <input type="date" value={form.targetDate} onChange={e => setForm({...form, targetDate: e.target.value})}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-primary-400 text-sm" />
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1.5">Target Date *</label>
+                  <input type="date" value={form.targetDate} onChange={e => setForm({...form, targetDate: e.target.value})}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-primary-400 text-sm" />
+                </div>
+                {editDream && (
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Status</label>
+                    <select value={form.status} onChange={e => setForm({...form, status: e.target.value as Dream["status"]})}
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-primary-400 text-sm">
+                      <option value="active">Active</option>
+                      <option value="paused">Paused</option>
+                      <option value="completed">Completed</option>
+                    </select>
+                  </div>
+                )}
               </div>
+              {editDream && (
+                <div>
+                  <div className="flex justify-between items-center mb-1.5">
+                    <label className="block text-sm font-medium text-slate-700">Progress</label>
+                    <span className="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-0.5 rounded-md">{form.progress}%</span>
+                  </div>
+                  <input type="range" min="0" max="100" value={form.progress} onChange={e => {
+                    const val = parseInt(e.target.value);
+                    setForm({
+                      ...form,
+                      progress: val,
+                      status: val === 100 ? "completed" : form.status === "completed" ? "active" : form.status
+                    });
+                  }} className="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-primary-600" />
+                </div>
+              )}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1.5">Description</label>
                 <textarea value={form.description} onChange={e => setForm({...form, description: e.target.value})} rows={3}

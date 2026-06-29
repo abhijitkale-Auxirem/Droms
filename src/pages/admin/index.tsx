@@ -89,7 +89,6 @@ export function AdminGoalsPage() {
     addLabel="Create Goal Template"
     columns={["Goal", "User", "Category", "Deadline", "Progress", "Status"]}
     rows={[
-      { goal: "Complete MVP Development", user: "Alex Rivera", cat: "Career", deadline: "Mar 31, 2025", progress: "80%", status: <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">On Track</span> },
       { goal: "Save $50K Emergency Fund", user: "Sarah Chen", cat: "Financial", deadline: "Jun 1, 2025", progress: "72%", status: <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">On Track</span> },
       { goal: "Run 50 Miles/Month", user: "Marcus J", cat: "Health", deadline: "Feb 28, 2025", progress: "88%", status: <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">On Track</span> },
       { goal: "Write 1000 Words Daily", user: "Emma Wilson", cat: "Creativity", deadline: "Sep 1, 2025", progress: "45%", status: <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">At Risk</span> },

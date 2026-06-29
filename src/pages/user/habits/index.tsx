@@ -155,7 +155,6 @@ export default function HabitsPage() {
                 <th>Frequency</th>
                 <th>Streak</th>
                 <th className="w-44">Completion Rate</th>
-                <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -191,7 +190,6 @@ export default function HabitsPage() {
                         <span className="text-xs text-slate-500 w-8">{habit.completionRate}%</span>
                       </div>
                     </td>
-                    <td><span className={`status-badge ${getStatusColor(habit.status)}`}>{habit.status}</span></td>
                     <td>
                       <div className="flex items-center gap-2">
                         {habit.status === "active" && (

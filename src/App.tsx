@@ -30,6 +30,8 @@ import BlogPage from "@/pages/public/blog";
 import PrivacyPage from "@/pages/public/privacy";
 import TermsPage from "@/pages/public/terms";
 import DocsPage from "@/pages/public/docs";
+import CookiesPage from "@/pages/public/cookies";
+import CareersPage from "@/pages/public/careers";
 
 // Auth Pages
 import LoginPage from "@/pages/auth/login";
@@ -120,11 +122,11 @@ export default function App() {
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/solutions" element={<FeaturesPage />} />
-        <Route path="/help" element={<ContactPage />} />
+        <Route path="/help" element={<FAQPage />} />
         <Route path="/docs" element={<DocsPage />} />
-        <Route path="/cookies" element={<PrivacyPage />} />
+        <Route path="/cookies" element={<CookiesPage />} />
         <Route path="/security" element={<AboutPage />} />
-        <Route path="/careers" element={<AboutPage />} />
+        <Route path="/careers" element={<CareersPage />} />
         <Route path="/press" element={<AboutPage />} />
       </Route>
 
